@@ -43,7 +43,7 @@ export default async (reaction: MessageReaction) => {
   const channelFrom = message.channel as TextChannel;
   const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
   const emb = new EmbedBuilder()
-    .setColor(message.member ? message.member.displayHexColor : 'Aqua')
+    .setColor(message.member?.displayHexColor ?? 'Aqua')
     .setAuthor({
       name: message.author ? message.author?.tag : '',
       iconURL: message.author?.displayAvatarURL(),
