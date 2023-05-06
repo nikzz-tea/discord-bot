@@ -12,9 +12,11 @@ export default {
         else {
           let obj = JSON.parse(data) as ICommands;
           const guildId = guild.id.toString();
-          obj[guildId] = obj[guildId].filter((item) => {
-            item.hasOwnProperty(name);
+          const filtered = [] as object[];
+          obj[guildId].forEach((item) => {
+            if (!item.hasOwnProperty(name)) filtered.push(item);
           });
+          obj[guildId] = filtered;
           const json = JSON.stringify(obj, null, 2);
           fs.writeFile('./src/db/commands.json', json, (err) => {
             if (err) console.log(err);
@@ -22,9 +24,6 @@ export default {
           message.react('✅');
         }
       });
-    } else {
-      message.react('❎');
-      return;
     }
   },
 } as CommandObject;
