@@ -1,13 +1,6 @@
-import { Message, Guild } from 'discord.js';
 import { CommandObject, CommandType } from 'wokcommands';
 import fs from 'fs';
-import { ICommands } from '../models';
-
-interface Props {
-  args: string[];
-  guild: Guild;
-  message: Message;
-}
+import { ICommands, Props } from '../models';
 
 export default {
   type: CommandType.LEGACY,
