@@ -20,10 +20,6 @@ client.on('ready', () => {
   client.user?.setActivity('Subarashiki Hibi ~Furenzoku Sonzai~', { type: ActivityType.Playing });
 });
 
-client.on('messageReactionAdd', (r) => {
-  r.message.fetch().then((fullMessage) => {
-    console.log(`${r.emoji.name} set on ${fullMessage.content}`);
-  });
-});
+export default client;
 
 client.login(process.env.TOKEN);
