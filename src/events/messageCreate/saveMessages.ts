@@ -2,6 +2,12 @@ import { Message } from 'discord.js';
 import fs from 'fs';
 import { name, prefix } from '../../config.json';
 
+export const getGuildName = (id: string) => {
+  let guildName = 'drip';
+  if (id === '1039988408937881690') guildName = 'vnmb';
+  return guildName;
+};
+
 export default (message: Message) => {
   if (
     message.content.startsWith(prefix) ||
@@ -10,9 +16,8 @@ export default (message: Message) => {
     message.author.bot
   )
     return;
-  let guildName = 'drip';
-  if (message.guild?.id === '1039988408937881690') guildName = 'vnmb';
-  const pushItems = (type: string) => {
+  const pushItem = (type: string) => {
+    const guildName = getGuildName(message.guild?.id as string);
     const data = fs.readFileSync(`./src/db/${type}.${guildName}.json`, 'utf-8');
     const obj = JSON.parse(data);
     const item =
@@ -22,6 +27,6 @@ export default (message: Message) => {
     const json = JSON.stringify(obj, null, 2);
     fs.writeFileSync(`./src/db/${type}.${guildName}.json`, json);
   };
-  if (message.content != '') pushItems('messages');
-  if (message.attachments.size > 0) pushItems('images');
+  if (message.content != '') pushItem('messages');
+  if (message.attachments.size > 0) pushItem('images');
 };

@@ -1,10 +1,9 @@
 import { Message } from 'discord.js';
 import fs from 'fs';
 import { prefix } from '../../config.json';
-import client from '../..';
 
 export default (message: Message) => {
-  if (message.author.id === client.user?.id) return;
+  if (message.author.id === message.client.user?.id) return;
   if (!message.content.startsWith(prefix)) return;
   fs.readFile('./src/db/commands.json', 'utf-8', (err, data) => {
     if (err) console.log(err);

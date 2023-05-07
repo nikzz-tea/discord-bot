@@ -2,7 +2,6 @@ import { EmbedBuilder, Message, MessageReaction, TextChannel } from 'discord.js'
 import moment from 'moment';
 import fs from 'fs';
 import { platinaEmotes, platinaChannels } from '../../config.json';
-import client from '../..';
 
 export default async (reaction: MessageReaction) => {
   if (!platinaEmotes.includes(reaction.emoji.identifier)) return;
@@ -39,7 +38,7 @@ export default async (reaction: MessageReaction) => {
   if (ids.includes(Number(message.id))) return;
   ids.push(Number(message.id));
   const json = JSON.stringify(ids, null, 2);
-  channelTo = client.channels.cache.get(channelTo) as TextChannel;
+  channelTo = message.client.channels.cache.get(channelTo) as TextChannel;
   const channelFrom = message.channel as TextChannel;
   const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
   const emb = new EmbedBuilder()

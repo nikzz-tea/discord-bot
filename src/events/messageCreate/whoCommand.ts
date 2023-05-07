@@ -1,9 +1,8 @@
-import { GuildMember, Message } from 'discord.js';
-import client from '../..';
+import { Message } from 'discord.js';
 import { name, whoExclude } from '../../config.json';
 
 export default async (message: Message) => {
-  if (message.author.id === client.user?.id) return;
+  if (message.author.id === message.client.user?.id) return;
   if (!message.content.toLowerCase().startsWith(`${name} кто`)) return;
   const members = await message.guild?.members.fetch();
   const users = [] as string[];
