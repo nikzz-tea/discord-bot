@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import fs from 'fs';
-import { name, prefix } from '../../config.json';
+import { name, prefix, saveFromChannels } from '../../config.json';
 
 export const getGuildName = (id: string) => {
   let guildName = 'drip';
@@ -13,7 +13,8 @@ export default (message: Message) => {
     message.content.startsWith(prefix) ||
     message.content.startsWith(name) ||
     message.content.startsWith(`${name} кто`) ||
-    message.author.bot
+    message.author.bot ||
+    !saveFromChannels.includes(message.channel.id)
   )
     return;
   const pushItem = (type: string) => {
