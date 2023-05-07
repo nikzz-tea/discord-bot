@@ -12,10 +12,11 @@ export const getMessages = (id: string) => {
 };
 
 export const genString = (id: string) => {
-  const max = getMessages(id).length;
+  const list = getMessages(id);
+  const max = list.length;
   const start = Math.floor(Math.random() * max - 1000) + 1;
   const end = start + 1000;
-  const messages = getMessages(id).slice(start, end);
+  const messages = list.slice(start, end);
   const markov = new MarkovGen({ input: messages, minLength: 1 });
   return markov.makeChain();
 };
