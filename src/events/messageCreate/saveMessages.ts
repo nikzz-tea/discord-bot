@@ -23,7 +23,7 @@ export default (message: Message) => {
     const obj = JSON.parse(data);
     const item =
       type === 'messages' ? message.content : Array.from(message.attachments.values())[0].url;
-    obj.list.push(item);
+    obj.list.unshift(item);
     obj.length++;
     const json = JSON.stringify(obj, null, 2);
     fs.writeFileSync(`./src/db/${type}.${guildName}.json`, json);
