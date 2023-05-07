@@ -5,7 +5,7 @@ import { EmbedBuilder } from 'discord.js';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['ком'],
+  aliases: ['команды'],
   reply: false,
   callback: ({ args, guild, message }: Props) => {
     try {
