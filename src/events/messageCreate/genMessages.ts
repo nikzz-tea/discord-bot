@@ -4,14 +4,18 @@ import fs from 'fs';
 import { name } from '../../config.json';
 import { getGuildName } from './saveMessages';
 
-export const genString = (id: string) => {
+export const getMessages = (id: string) => {
   const guildName = getGuildName(id);
   const data = fs.readFileSync(`./src/db/messages.${guildName}.json`, 'utf-8');
   const obj = JSON.parse(data);
-  const max = obj.length;
+  return obj.list as string[];
+};
+
+export const genString = (id: string) => {
+  const max = getMessages(id).length;
   const start = Math.floor(Math.random() * max - 1000) + 1;
   const end = start + 1000;
-  const messages = obj.list.slice(start, end);
+  const messages = getMessages(id).slice(start, end);
   const markov = new MarkovGen({ input: messages, minLength: 1 });
   return markov.makeChain();
 };
