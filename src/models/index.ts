@@ -1,7 +1,7 @@
 import { Guild, Message } from 'discord.js';
 
 export interface ICommands {
-  [x: string]: any[];
+  [x: string]: object[];
 }
 
 export interface Props {
