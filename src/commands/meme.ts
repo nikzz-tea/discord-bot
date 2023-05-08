@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from 'canvas';
-import { CommandObject, CommandType, CooldownTypes } from 'wokcommands';
+import { CommandObject, CommandType } from 'wokcommands';
 import { ITemplate, Props } from '../models';
 import { getRandomImage } from '../utils';
 import { memes } from '../config.json';

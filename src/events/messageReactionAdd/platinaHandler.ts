@@ -57,4 +57,5 @@ export default async (reaction: MessageReaction) => {
   }
   channelTo.send({ embeds: [emb] });
   fs.writeFileSync('./src/db/platina.json', json);
+  console.log(`Posted: ${message.content ?? Array.from(message.attachments.values())[0].url}`);
 };
