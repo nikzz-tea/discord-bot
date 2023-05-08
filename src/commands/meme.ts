@@ -6,7 +6,7 @@ import { memes } from '../config.json';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['м'],
+  aliases: ['мем'],
   reply: false,
   cooldowns: {
     duration: '3 s',
