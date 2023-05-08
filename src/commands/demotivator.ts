@@ -7,6 +7,11 @@ export default {
   type: CommandType.LEGACY,
   aliases: ['демотиватор', 'д'],
   reply: false,
+  cooldowns: {
+    duration: '3 s',
+    errorMessage: 'подожди кд',
+    type: 'perGuild',
+  },
   callback: async ({ args, guild, message }: Props) => {
     try {
       message.channel.sendTyping();

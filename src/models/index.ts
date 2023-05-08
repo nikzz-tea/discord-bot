@@ -10,6 +10,15 @@ export interface Props {
   message: Message;
 }
 
+export interface ITemplate {
+  url: string;
+  size: number[];
+  boxes: {
+    size: number[];
+    leftCorner: number[];
+  }[];
+}
+
 export interface IWeather {
   data: {
     weather: {
