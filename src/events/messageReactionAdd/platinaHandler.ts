@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message, MessageReaction, TextChannel } from 'discord.js';
+import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
 import fs from 'fs';
 import { platinaEmotes, platinaChannels } from '../../config.json';

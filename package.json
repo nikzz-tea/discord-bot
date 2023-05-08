@@ -13,6 +13,7 @@
   "dependencies": {
     "@types/usetube": "^2.1.0",
     "axios": "^1.4.0",
+    "canvas": "^2.11.2",
     "discord.js": "^14.10.2",
     "dotenv": "^16.0.3",
     "markov-generator": "^1.2.3",

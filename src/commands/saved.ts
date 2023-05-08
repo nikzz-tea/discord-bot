@@ -1,7 +1,7 @@
 import { CommandObject, CommandType } from 'wokcommands';
 import fs from 'fs';
 import { Props } from '../models';
-import { getGuildName } from '../events/messageCreate/saveMessages';
+import { getGuildName } from '../utils';
 
 export default {
   type: CommandType.LEGACY,

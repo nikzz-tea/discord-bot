@@ -1,12 +1,7 @@
 import { Message } from 'discord.js';
 import fs from 'fs';
 import { name, prefix, saveFromChannels } from '../../config.json';
-
-export const getGuildName = (id: string) => {
-  let guildName = 'drip';
-  if (id === '1039988408937881690') guildName = 'vnmb';
-  return guildName;
-};
+import { getGuildName } from '../../utils';
 
 export default (message: Message) => {
   if (
