@@ -33,7 +33,7 @@ export default async (reaction: MessageReaction) => {
       break;
   }
   if (reaction.count !== req) return;
-  const data = fs.readFileSync('./src/db/platina.json', 'utf-8');
+  const data = fs.readFileSync('./db/platina.json', 'utf-8');
   const ids = JSON.parse(data) as number[];
   if (ids.includes(Number(message.id))) return;
   ids.push(Number(message.id));
@@ -56,6 +56,6 @@ export default async (reaction: MessageReaction) => {
     emb.setDescription(message.content);
   }
   channelTo.send({ embeds: [emb] });
-  fs.writeFileSync('./src/db/platina.json', json);
+  fs.writeFileSync('./db/platina.json', json);
   console.log(`Posted: ${message.content ?? Array.from(message.attachments.values())[0].url}`);
 };

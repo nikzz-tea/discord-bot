@@ -9,14 +9,14 @@ export const getGuildName = (id: string) => {
 
 export const getMessages = (id: string) => {
   const guildName = getGuildName(id);
-  const data = fs.readFileSync(`./src/db/messages.${guildName}.json`, 'utf-8');
+  const data = fs.readFileSync(`./db/messages.${guildName}.json`, 'utf-8');
   const obj = JSON.parse(data);
   return obj.list as string[];
 };
 
 export const getRandomImage = (id: string) => {
   const guildName = getGuildName(id);
-  const data = fs.readFileSync(`./src/db/images.${guildName}.json`, 'utf-8');
+  const data = fs.readFileSync(`./db/images.${guildName}.json`, 'utf-8');
   const obj = JSON.parse(data);
   const images = obj.list.filter(
     (item) => item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.jpeg'),

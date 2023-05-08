@@ -14,14 +14,14 @@ export default (message: Message) => {
     return;
   const pushItem = (type: string) => {
     const guildName = getGuildName(message.guild?.id as string);
-    const data = fs.readFileSync(`./src/db/${type}.${guildName}.json`, 'utf-8');
+    const data = fs.readFileSync(`./db/${type}.${guildName}.json`, 'utf-8');
     const obj = JSON.parse(data);
     const item =
       type === 'messages' ? message.content : Array.from(message.attachments.values())[0].url;
     obj.list.unshift(item);
     obj.length++;
     const json = JSON.stringify(obj, null, 2);
-    fs.writeFileSync(`./src/db/${type}.${guildName}.json`, json);
+    fs.writeFileSync(`./db/${type}.${guildName}.json`, json);
   };
   if (message.content != '') pushItem('messages');
   if (message.attachments.size > 0) pushItem('images');

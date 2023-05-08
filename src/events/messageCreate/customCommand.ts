@@ -5,7 +5,7 @@ import { prefix } from '../../config.json';
 export default (message: Message) => {
   if (message.author.id === message.client.user?.id) return;
   if (!message.content.startsWith(prefix)) return;
-  fs.readFile('./src/db/commands.json', 'utf-8', (err, data) => {
+  fs.readFile('./db/commands.json', 'utf-8', (err, data) => {
     if (err) console.log(err);
     else {
       const commands = JSON.parse(data)[message.guild?.id.toString() as string];

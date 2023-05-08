@@ -9,7 +9,7 @@ export default {
   reply: false,
   callback: ({ args, guild, message }: Props) => {
     try {
-      const data = fs.readFileSync('./src/db/commands.json', 'utf-8');
+      const data = fs.readFileSync('./db/commands.json', 'utf-8');
       const obj = JSON.parse(data) as ICommands;
       const guildId = guild.id.toString();
       const commands = [];

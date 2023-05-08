@@ -14,14 +14,14 @@ export default {
       message.react('❎');
       return;
     }
-    fs.readFile('./src/db/commands.json', 'utf-8', (err, data) => {
+    fs.readFile('./db/commands.json', 'utf-8', (err, data) => {
       if (err) console.log(err);
       else {
         let obj = JSON.parse(data) as ICommands;
         const guildId = guild.id.toString();
         obj[guildId].push({ [name]: content });
         const json = JSON.stringify(obj, null, 2);
-        fs.writeFile('./src/db/commands.json', json, (err) => {
+        fs.writeFile('./db/commands.json', json, (err) => {
           if (err) console.log(err);
         });
         message.react('✅');

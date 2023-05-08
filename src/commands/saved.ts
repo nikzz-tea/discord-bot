@@ -8,7 +8,7 @@ export default {
   reply: false,
   callback: ({ args, guild, message }: Props) => {
     const guildName = getGuildName(guild.id);
-    const data = fs.readFileSync(`./src/db/messages.${guildName}.json`, 'utf-8');
+    const data = fs.readFileSync(`./db/messages.${guildName}.json`, 'utf-8');
     const obj = JSON.parse(data);
     return {
       content: obj.length.toString(),
