@@ -2,6 +2,7 @@ import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
 import fs from 'fs';
 import { platinaEmotes, platinaChannels } from '../../config.json';
+import { logChannel } from '../../utils';
 
 export default async (reaction: MessageReaction) => {
   if (!platinaEmotes.includes(reaction.emoji.identifier)) return;
@@ -57,5 +58,7 @@ export default async (reaction: MessageReaction) => {
   }
   channelTo.send({ embeds: [emb] });
   fs.writeFileSync('./db/platina.json', json);
-  console.log(`Posted: ${message.content ?? Array.from(message.attachments.values())[0].url}`);
+  logChannel().send(
+    `Posted: ${message.content ?? Array.from(message.attachments.values())[0].url}`,
+  );
 };

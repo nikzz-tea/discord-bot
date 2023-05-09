@@ -1,10 +1,17 @@
 import fs from 'fs';
 import MarkovGen from 'markov-generator';
+import client from '..';
+import { TextChannel } from 'discord.js';
+import { logChannelId } from '../config.json';
 
 export const getGuildName = (id: string) => {
   let guildName = 'drip';
   if (id === '1039988408937881690') guildName = 'vnmb';
   return guildName;
+};
+
+export const logChannel = () => {
+  return client.channels.cache.get(logChannelId) as TextChannel;
 };
 
 export const getMessages = (id: string) => {
