@@ -50,6 +50,9 @@ export default async (reaction: MessageReaction) => {
       url: message.url,
     })
     .setFooter({ text: `${timestamp} • #${channelFrom.name}` });
+  if (message.embeds.length > 0) {
+    message.embeds[0].data.url && emb.setImage(message.embeds[0].data.url);
+  }
   if (message.attachments.size > 0) {
     emb.setImage(Array.from(message.attachments.values())[0].url);
   }
@@ -58,7 +61,5 @@ export default async (reaction: MessageReaction) => {
   }
   channelTo.send({ embeds: [emb] });
   fs.writeFileSync('./db/platina.json', json);
-  logChannel().send(
-    `Posted: ${message.content ?? Array.from(message.attachments.values())[0].url}`,
-  );
+  logChannel().send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };

@@ -11,5 +11,7 @@ export default async (reaction: MessageReaction, user: User) => {
   const role = reaction.message.guild.roles.cache.get(sheet[reaction.emoji.identifier]);
   const member = reaction.message.guild.members.cache.get(user.id);
   member.roles.remove(role);
-  logChannel().send(`Removed \`${role.name}\` from \`${user.tag}\``);
+  logChannel().send(
+    `**${reaction.message.guild.name}:**\nRemoved \`${role.name}\` from \`${user.tag}\``,
+  );
 };
