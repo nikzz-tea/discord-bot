@@ -11,7 +11,7 @@ export default (message: Message) => {
       const commands = JSON.parse(data)[message.guild?.id.toString() as string];
       for (const command of commands) {
         const key = Object.keys(command)[0];
-        if (message.content.toLowerCase() === `${prefix}${key}`) {
+        if (message.content.toLowerCase() === `${prefix}${key.toLowerCase()}`) {
           message.channel.send(command[key]);
         }
       }
