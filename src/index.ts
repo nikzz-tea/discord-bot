@@ -2,6 +2,7 @@ import { ActivityType, Client, Partials } from 'discord.js';
 import WOKCommands from 'wokcommands';
 import path from 'path';
 import dotenv from 'dotenv';
+import { vndbService } from './services/vndb.service';
 
 dotenv.config();
 
@@ -17,7 +18,13 @@ client.on('ready', () => {
     events: { dir: path.join(__dirname, 'events') },
   });
   console.log(`Logged as ${client.user?.tag}`);
-  client.user?.setActivity('Subarashiki Hibi ~Furenzoku Sonzai~', { type: ActivityType.Playing });
+  vndbService.vnsByRating().then((statuses) => {
+    setInterval(() => {
+      client.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], {
+        type: ActivityType.Playing,
+      });
+    }, 1000 * 60 * 60);
+  });
 });
 
 export default client;
