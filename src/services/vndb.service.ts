@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { INovel } from '../models';
 
 export const vndbService = {
   async vnsByRating() {
@@ -19,5 +20,16 @@ export const vndbService = {
     } catch (error) {
       console.log(error);
     }
+  },
+  async getVn(searchQuery: string) {
+    const query = {
+      filters: ['search', '=', searchQuery],
+      fields: 'title, rating, length_minutes, description, image.url',
+      sort: 'id',
+      results: 1,
+      page: 1,
+    };
+    const { data } = await axios.post<INovel>('https://api.vndb.org/kana/vn', query);
+    return data.results[0];
   },
 };

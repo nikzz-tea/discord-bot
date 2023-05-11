@@ -19,6 +19,17 @@ export interface ITemplate {
   }[];
 }
 
+export interface INovel {
+  results: {
+    id: string;
+    title: string;
+    length_minutes?: number;
+    rating?: number;
+    image?: { url: string };
+    description?: string;
+  }[];
+}
+
 export interface IWeather {
   weather: {
     id: number;
