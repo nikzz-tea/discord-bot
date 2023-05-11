@@ -25,7 +25,7 @@ export const vndbService = {
     const query = {
       filters: ['search', '=', searchQuery],
       fields: 'title, rating, length_minutes, description, image.url',
-      sort: 'id',
+      sort: 'searchrank',
       results: 1,
       page: 1,
     };
