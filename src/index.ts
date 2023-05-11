@@ -19,6 +19,9 @@ client.on('ready', () => {
   });
   console.log(`Logged as ${client.user?.tag}`);
   vndbService.vnsByRating().then((statuses) => {
+    client.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], {
+      type: ActivityType.Playing,
+    });
     setInterval(() => {
       client.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], {
         type: ActivityType.Playing,
