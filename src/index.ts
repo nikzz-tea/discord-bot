@@ -1,5 +1,5 @@
 import { ActivityType, Client, Partials } from 'discord.js';
-import WOKCommands from 'wokcommands';
+import WOKCommands, { DefaultCommands } from 'wokcommands';
 import path from 'path';
 import dotenv from 'dotenv';
 import { vndbService } from './services/vndb.service';
@@ -16,6 +16,14 @@ client.on('ready', () => {
     client,
     commandsDir: path.join(__dirname, 'commands'),
     events: { dir: path.join(__dirname, 'events') },
+    disabledDefaultCommands: [
+      DefaultCommands.ChannelCommand,
+      DefaultCommands.CustomCommand,
+      DefaultCommands.Prefix,
+      DefaultCommands.RequiredPermissions,
+      DefaultCommands.RequiredRoles,
+      DefaultCommands.ToggleCommand,
+    ],
   });
   console.log(`Logged as ${client.user?.tag}`);
   vndbService.vnsByRating().then((statuses) => {
