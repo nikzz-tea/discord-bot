@@ -8,6 +8,7 @@ export default {
   callback: ({ args, guild, message }: Props) => {
     let member =
       message.mentions.members?.first() ??
+      message.guild?.members.cache.find((m) => m.user.username === args[0]) ??
       message.guild?.members.cache.get(args[0]) ??
       message.member;
     return {
