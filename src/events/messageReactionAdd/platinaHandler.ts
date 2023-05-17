@@ -1,45 +1,27 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
 import fs from 'fs';
-import { platinaEmotes, platinaChannels } from '../../config.json';
+import { platina } from '../../config.json';
 import { logChannel } from '../../utils';
 
 export default async (reaction: MessageReaction) => {
-  if (!platinaEmotes.includes(reaction.emoji.identifier)) return;
-  if (platinaChannels.includes(reaction.message.channel.id)) return;
-  let channelTo;
-  let req;
+  if (!Object.keys(platina).includes(reaction.emoji.identifier)) return;
+  if (platina[reaction.emoji.identifier].guild != reaction.message.guild.id) return;
+  if (platina[reaction.emoji.identifier].channel == reaction.message.channel.id) return;
+  if (reaction.count !== platina[reaction.emoji.identifier].req) return;
   let message = reaction.message;
   if (reaction.message.partial) {
     message = await reaction.message.fetch();
     reaction = await reaction.fetch();
   }
-  switch (reaction.emoji.identifier) {
-    case 'uruesami3060:954475744401162260':
-      req = 4;
-      channelTo = '967837802983194625';
-      break;
-    case 'chuunibyou:1057564333233676338':
-      req = 6;
-      channelTo = '1093112656195485746';
-      break;
-    case 'eblan:1095739894619447337':
-      req = 6;
-      channelTo = '1095734091107803146';
-      break;
-    case 'Jokerge:1091480491955335179':
-    default:
-      req = 1;
-      channelTo = '829357606224134174';
-      break;
-  }
-  if (reaction.count !== req) return;
   const data = fs.readFileSync('./db/platina.json', 'utf-8');
   const ids = JSON.parse(data) as number[];
   if (ids.includes(Number(message.id))) return;
   ids.push(Number(message.id));
   const json = JSON.stringify(ids, null, 2);
-  channelTo = message.client.channels.cache.get(channelTo) as TextChannel;
+  const channelTo = message.client.channels.cache.get(
+    platina[reaction.emoji.identifier].channel,
+  ) as TextChannel;
   const channelFrom = message.channel as TextChannel;
   const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
   const emb = new EmbedBuilder()
