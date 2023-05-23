@@ -1,9 +1,5 @@
 import { Guild, Message } from 'discord.js';
 
-export interface ICommands {
-  [x: string]: object[];
-}
-
 export interface Props {
   args: string[];
   guild: Guild;
