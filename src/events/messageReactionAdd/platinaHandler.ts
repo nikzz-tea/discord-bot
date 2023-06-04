@@ -8,12 +8,12 @@ export default async (reaction: MessageReaction) => {
   if (!Object.keys(platina).includes(reaction.emoji.identifier)) return;
   if (platina[reaction.emoji.identifier].guild != reaction.message.guild.id) return;
   if (platina[reaction.emoji.identifier].channel == reaction.message.channel.id) return;
-  if (reaction.count !== platina[reaction.emoji.identifier].req) return;
   let message = reaction.message;
   if (reaction.message.partial) {
     message = await reaction.message.fetch();
     reaction = await reaction.fetch();
   }
+  if (reaction.count !== platina[reaction.emoji.identifier].req) return;
   const data = fs.readFileSync('./db/platina.json', 'utf-8');
   const ids = JSON.parse(data) as number[];
   if (ids.includes(Number(message.id))) return;
