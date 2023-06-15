@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import fs from 'fs';
-import { name, prefix, saveFromChannels } from '../../config.json';
-import { getGuildName } from '../../utils';
+import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
+import { genString, getGuildName } from '../../utils';
 
 export default (message: Message) => {
   if (
@@ -20,6 +20,7 @@ export default (message: Message) => {
       type === 'messages' ? message.content : Array.from(message.attachments.values())[0].url;
     obj.list.unshift(item);
     obj.length++;
+    if (obj.length % genPerMessage === 0) genString(message.guild?.id as string);
     const json = JSON.stringify(obj, null, 2);
     fs.writeFileSync(`./db/${type}.${guildName}.json`, json);
   };
