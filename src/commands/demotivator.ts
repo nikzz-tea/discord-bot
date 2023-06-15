@@ -1,7 +1,7 @@
 import { createCanvas, loadImage } from 'canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { genFiltered, getRandomImage } from '../utils';
+import { genFiltered, getRandomImage, logChannel } from '../utils';
 
 export default {
   type: CommandType.LEGACY,
@@ -39,7 +39,7 @@ export default {
         ],
       };
     } catch (error) {
-      console.log(error);
+      logChannel().send(`\`\`\`json\n${error}\n\`\`\``);
       return message.react('❌');
     }
   },

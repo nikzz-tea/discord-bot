@@ -1,12 +1,12 @@
 import { createCanvas, loadImage } from 'canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { ITemplate, Props } from '../models';
-import { getRandomImage } from '../utils';
+import { getRandomImage, logChannel } from '../utils';
 import { memes } from '../config.json';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['мем'],
+  aliases: ['м'],
   reply: false,
   cooldowns: {
     duration: '3 s',
@@ -37,7 +37,7 @@ export default {
         ],
       };
     } catch (error) {
-      console.log(error);
+      logChannel().send(`\`\`\`json\n${error}\n\`\`\``);
       return message.react('❌');
     }
   },
