@@ -20,7 +20,8 @@ export default (message: Message) => {
       type === 'messages' ? message.content : Array.from(message.attachments.values())[0].url;
     obj.list.unshift(item);
     obj.length++;
-    if (obj.length % genPerMessage === 0) genString(message.guild?.id as string);
+    if (obj.length % genPerMessage === 0)
+      message.channel.send(genString(message.guild?.id as string));
     const json = JSON.stringify(obj, null, 2);
     fs.writeFileSync(`./db/${type}.${guildName}.json`, json);
   };
