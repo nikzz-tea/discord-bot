@@ -3,15 +3,17 @@ import fs from 'fs';
 import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
 import { genString, getGuildName } from '../../utils';
 
+let count = 0;
+
 export default (message: Message) => {
-  if (
-    message.content.startsWith(prefix) ||
-    message.content.startsWith(name) ||
-    message.content.startsWith(`${name} кто`) ||
-    message.author.bot ||
-    !saveFromChannels.includes(message.channel.id)
-  )
-    return;
+  if (message.content.startsWith(prefix)) return;
+  if (message.content.startsWith(name)) return;
+  if (message.content.startsWith(`${name} кто`)) return;
+  if (message.author.bot) return;
+  count++;
+  console.log(count);
+  count % genPerMessage === 0 && message.channel.send(genString(message.guild?.id as string));
+  if (!saveFromChannels.includes(message.channel.id)) return;
   const pushItem = (type: string) => {
     const guildName = getGuildName(message.guild?.id as string);
     const data = fs.readFileSync(`./db/${type}.${guildName}.json`, 'utf-8');
@@ -20,8 +22,6 @@ export default (message: Message) => {
       type === 'messages' ? message.content : Array.from(message.attachments.values())[0].url;
     obj.list.unshift(item);
     obj.length++;
-    if (obj.length % genPerMessage === 0)
-      message.channel.send(genString(message.guild?.id as string));
     const json = JSON.stringify(obj, null, 2);
     fs.writeFileSync(`./db/${type}.${guildName}.json`, json);
   };
