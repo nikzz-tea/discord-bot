@@ -34,8 +34,8 @@ export const getRandomImage = (id: string) => {
 export const genString = (id: string) => {
   const list = getMessages(id);
   const max = list.length;
-  const start = Math.floor(Math.random() * max - 1000) + 1;
-  const end = start + 1000;
+  const start = Math.floor(Math.random() * max - 3000) + 1;
+  const end = start + 3000;
   const messages = list.slice(start, end);
   const markov = new MarkovGen({ input: messages, minLength: 1 });
   return markov.makeChain();

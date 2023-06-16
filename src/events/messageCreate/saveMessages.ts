@@ -11,7 +11,6 @@ export default (message: Message) => {
   if (message.content.startsWith(`${name} кто`)) return;
   if (message.author.bot) return;
   count++;
-  console.log(count);
   count % genPerMessage === 0 && message.channel.send(genString(message.guild?.id as string));
   if (!saveFromChannels.includes(message.channel.id)) return;
   const pushItem = (type: string) => {
