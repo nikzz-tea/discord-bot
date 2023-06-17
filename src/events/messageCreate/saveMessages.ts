@@ -10,9 +10,9 @@ export default (message: Message) => {
   if (message.content.startsWith(name)) return;
   if (message.content.startsWith(`${name} кто`)) return;
   if (message.author.bot) return;
+  if (!saveFromChannels.includes(message.channel.id)) return;
   count++;
   count % genPerMessage === 0 && message.channel.send(genString(message.guild?.id as string));
-  if (!saveFromChannels.includes(message.channel.id)) return;
   const pushItem = (type: string) => {
     const guildName = getGuildName(message.guild?.id as string);
     const data = fs.readFileSync(`./db/${type}.${guildName}.json`, 'utf-8');
