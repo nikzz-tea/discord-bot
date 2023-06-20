@@ -12,7 +12,8 @@ export default async (message: Message) => {
   if (message.author.bot) return;
   if (!saveFromChannels.includes(message.channel.id)) return;
   count++;
-  count % genPerMessage === 0 && message.channel.send(await genString(message.guild?.id as string));
+  count % genPerMessage === 0 &&
+    message.channel.send(await genString(message.guild?.id as string, 10));
   const pushItem = (type: string) => {
     type === 'messages'
       ? Messages.create({ message: message.content, guildId: message.guildId })

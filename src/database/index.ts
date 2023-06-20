@@ -4,7 +4,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
   dialect: 'sqlite',
   host: 'localhost',
   storage: 'db.sqlite',
-  logging: console.log,
+  logging: false,
 });
 
 export default sequelize;

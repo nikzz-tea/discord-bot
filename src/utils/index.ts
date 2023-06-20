@@ -3,7 +3,6 @@ import client from '..';
 import { TextChannel } from 'discord.js';
 import { logChannelId } from '../config.json';
 import { Images, Messages } from '../database/models';
-import { Op } from 'sequelize';
 
 export const getGuildName = (id: string) => {
   let guildName = 'drip';
@@ -17,15 +16,14 @@ export const logChannel = () => {
 
 export const getMessages = async (id: string) => {
   const max = await Messages.count({ where: { guildId: id } });
-  const start = Math.floor(Math.random() * max - 2000) + 1;
-  const end = start + 2000;
+  const limit = 500;
+  const start = Math.floor(Math.random() * max - limit) + 1;
   const rows = await Messages.findAll({
     where: {
       guildId: id,
-      id: {
-        [Op.between]: [start, end],
-      },
     },
+    offset: start,
+    limit,
   });
   return rows.map((message) => message.get('message')) as string[];
 };
@@ -34,14 +32,15 @@ export const getRandomImage = async (id: string) => {
   const table = await Images.findAll({ attributes: ['image'], where: { guildId: id } });
   const images = table.map((image) => image.get('image')) as string[];
   const filtered = images.filter(
-    (item) => item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.jpeg'),
+    (item) =>
+      item !== '' || item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.jpeg'),
   );
   return filtered[Math.floor(Math.random() * filtered.length)];
 };
 
-export const genString = async (id: string) => {
+export const genString = async (id: string, minLength: number) => {
   const messages = await getMessages(id);
-  const markov = new MarkovGen({ input: messages, minLength: 1 });
+  const markov = new MarkovGen({ input: messages, minLength });
   return markov.makeChain();
 };
 
