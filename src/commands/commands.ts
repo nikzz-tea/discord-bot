@@ -1,19 +1,18 @@
 import { CommandObject, CommandType } from 'wokcommands';
-import fs from 'fs';
 import { Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
+import { Commands } from '../database/models';
 
 export default {
   type: CommandType.LEGACY,
   aliases: ['команды'],
   reply: false,
-  callback: ({ args, guild, message }: Props) => {
-    const data = fs.readFileSync('./db/commands.json', 'utf-8');
-    const obj = JSON.parse(data);
-    const commands = Object.keys(obj[guild.id.toString()]);
+  callback: async ({ args, guild, message }: Props) => {
+    const commands = await Commands.findAll({ attributes: ['name'], where: { guildId: guild.id } });
+    const names = commands.map((command) => command.get('name'));
     const emb = new EmbedBuilder()
       .setTitle('Список кастомных команд')
-      .setDescription(commands.sort().join(', '))
+      .setDescription(names.sort().join(', '))
       .setColor('Aqua');
     return {
       embeds: [emb],

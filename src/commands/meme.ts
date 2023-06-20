@@ -24,7 +24,7 @@ export default {
       const canvasTemplate = await loadImage(template.url);
       const ctx = canvas.getContext('2d');
       for (const box of template.boxes) {
-        const image = await loadImage(getRandomImage(guild.id));
+        const image = await loadImage(await getRandomImage(guild.id));
         ctx.drawImage(image, box.leftCorner[0], box.leftCorner[1], box.size[0], box.size[1]);
       }
       ctx.drawImage(canvasTemplate, 0, 0);

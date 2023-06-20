@@ -1,8 +1,9 @@
-import fs from 'fs';
 import MarkovGen from 'markov-generator';
 import client from '..';
 import { TextChannel } from 'discord.js';
 import { logChannelId } from '../config.json';
+import { Images, Messages } from '../database/models';
+import { Op } from 'sequelize';
 
 export const getGuildName = (id: string) => {
   let guildName = 'drip';
@@ -14,41 +15,41 @@ export const logChannel = () => {
   return client.channels.cache.get(logChannelId) as TextChannel;
 };
 
-export const getMessages = (id: string) => {
-  const guildName = getGuildName(id);
-  const data = fs.readFileSync(`./db/messages.${guildName}.json`, 'utf-8');
-  const obj = JSON.parse(data);
-  return obj.list as string[];
+export const getMessages = async (id: string) => {
+  const max = await Messages.count({ where: { guildId: id } });
+  const start = Math.floor(Math.random() * max - 2000) + 1;
+  const end = start + 2000;
+  const rows = await Messages.findAll({
+    where: {
+      guildId: id,
+      id: {
+        [Op.between]: [start, end],
+      },
+    },
+  });
+  return rows.map((message) => message.get('message')) as string[];
 };
 
-export const getRandomImage = (id: string) => {
-  const guildName = getGuildName(id);
-  const data = fs.readFileSync(`./db/images.${guildName}.json`, 'utf-8');
-  const obj = JSON.parse(data);
-  const images = obj.list.filter(
+export const getRandomImage = async (id: string) => {
+  const table = await Images.findAll({ attributes: ['image'], where: { guildId: id } });
+  const images = table.map((image) => image.get('image')) as string[];
+  const filtered = images.filter(
     (item) => item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.jpeg'),
   );
-  return images[Math.floor(Math.random() * images.length)];
+  return filtered[Math.floor(Math.random() * filtered.length)];
 };
 
-export const genString = (id: string) => {
-  const list = getMessages(id);
-  const max = list.length;
-  const start = Math.floor(Math.random() * max - 1500) + 1;
-  const end = start + 1500;
-  const messages = list.slice(start, end);
+export const genString = async (id: string) => {
+  const messages = await getMessages(id);
   const markov = new MarkovGen({ input: messages, minLength: 1 });
   return markov.makeChain();
 };
 
-export const genFiltered = (id: string) => {
-  const list = getMessages(id).filter(
+export const genFiltered = async (id: string) => {
+  const messages = await getMessages(id);
+  const filtered = messages.filter(
     (item) => !item.startsWith('<') || !item.endsWith('>') || !item.startsWith('http'),
   );
-  const max = list.length;
-  const start = Math.floor(Math.random() * max - 1000) + 1;
-  const end = start + 1000;
-  const messages = list.slice(start, end);
-  const markov = new MarkovGen({ input: messages, minLength: 1 });
+  const markov = new MarkovGen({ input: filtered, minLength: 1 });
   return markov.makeChain();
 };

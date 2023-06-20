@@ -6,12 +6,11 @@ export default {
   type: CommandType.LEGACY,
   aliases: ['видео'],
   reply: false,
-  callback: ({ args, guild, message }: Props) => {
-    const videos = getMessages(message.guild?.id as string).filter(
-      (item) => item.endsWith('.mp4') || item.endsWith('.webm'),
-    );
+  callback: async ({ args, guild, message }: Props) => {
+    const videos = await getMessages(guild.id);
+    const filtered = videos.filter((item) => item.endsWith('.mp4') || item.endsWith('.webm'));
     return {
-      content: videos[Math.floor(Math.random() * videos.length)],
+      content: filtered[Math.floor(Math.random() * filtered.length)],
     };
   },
 } as CommandObject;

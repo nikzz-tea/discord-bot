@@ -3,12 +3,18 @@ import WOKCommands, { DefaultCommands } from 'wokcommands';
 import path from 'path';
 import dotenv from 'dotenv';
 import { vndbService } from './services/vndb.service';
+import { Commands, Images, Messages, Platina } from './database/models';
+import sequelize from './database';
 
 dotenv.config();
 
 const client = new Client({
   intents: 34563,
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+});
+
+client.once('ready', async () => {
+  sequelize.sync();
 });
 
 client.on('ready', () => {

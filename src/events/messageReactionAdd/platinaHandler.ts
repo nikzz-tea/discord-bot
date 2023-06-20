@@ -1,8 +1,8 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
-import fs from 'fs';
 import { platina } from '../../config.json';
 import { logChannel } from '../../utils';
+import { Platina } from '../../database/models';
 
 export default async (reaction: MessageReaction) => {
   if (!Object.keys(platina).includes(reaction.emoji.identifier)) return;
@@ -14,11 +14,9 @@ export default async (reaction: MessageReaction) => {
     reaction = await reaction.fetch();
   }
   if (reaction.count !== platina[reaction.emoji.identifier].req) return;
-  const data = fs.readFileSync('./db/platina.json', 'utf-8');
-  const ids = JSON.parse(data) as number[];
-  if (ids.includes(Number(message.id))) return;
-  ids.push(Number(message.id));
-  const json = JSON.stringify(ids, null, 2);
+  const table = await Platina.findAll({ attributes: ['messageId'] });
+  const ids = table.map((command) => command.get('messageId'));
+  if (ids.includes(message.id)) return;
   const channelTo = message.client.channels.cache.get(
     platina[reaction.emoji.identifier].channel,
   ) as TextChannel;
@@ -42,6 +40,6 @@ export default async (reaction: MessageReaction) => {
     emb.setDescription(message.content);
   }
   channelTo.send({ embeds: [emb] });
-  fs.writeFileSync('./db/platina.json', json);
+  Platina.create({ messageId: message.id });
   logChannel().send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };

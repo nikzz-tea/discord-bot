@@ -18,6 +18,8 @@
     "markov-generator": "^1.2.3",
     "moment": "^2.29.4",
     "pidusage": "^3.0.2",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6",
     "usetube": "^2.2.7",
     "wokcommands": "^2.1.3"
   },

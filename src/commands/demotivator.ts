@@ -19,7 +19,7 @@ export default {
       const template = await loadImage(
         'https://cdn.discordapp.com/attachments/829357606224134174/888106080482238495/template.png',
       );
-      const image = await loadImage(getRandomImage(guild.id));
+      const image = await loadImage(await getRandomImage(guild.id));
       const ctx = canvas.getContext('2d');
       ctx.drawImage(template, 0, 0);
       ctx.drawImage(image, 118, 103, 1050, 710);
@@ -27,9 +27,11 @@ export default {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.font = '72px Times New Roman';
-      ctx.fillText(genFiltered(guild.id).slice(0, 30), canvas.width / 2, 886);
+      const topText = await genFiltered(guild.id);
+      ctx.fillText(topText.slice(0, 30), canvas.width / 2, 886);
       ctx.font = '40px Times New Roman';
-      ctx.fillText(genFiltered(guild.id).slice(0, 60), canvas.width / 2, 966);
+      const bottomText = await genFiltered(guild.id);
+      ctx.fillText(bottomText.slice(0, 60), canvas.width / 2, 966);
       return {
         files: [
           {
