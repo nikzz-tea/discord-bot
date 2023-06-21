@@ -4,7 +4,7 @@ import { logChannel } from '../utils';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['рул'],
+  aliases: ['рулетка'],
   reply: false,
   cooldowns: {
     duration: '12 h',
