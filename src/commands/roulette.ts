@@ -17,7 +17,7 @@ export default {
       const hour = 1000 * 60 * 60;
       const timeouts = [hour * 6, hour * 12, hour * 24];
       const timeoutPhrases = ['6 часов', '12 часов', '**сутки**'];
-      const index = Math.floor(Math.random() * 3) + 1;
+      const index = Math.floor(Math.random() * 3);
       try {
         await message.member.timeout(timeouts[index], 'проебал в рулетку');
         return { content: `${message.member.displayName} отлетает на ${timeoutPhrases[index]}` };
