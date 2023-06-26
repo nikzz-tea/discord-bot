@@ -1,6 +1,7 @@
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { logChannel } from '../utils';
+import { timeouts } from '../config.json';
 
 export default {
   type: CommandType.LEGACY,
@@ -12,20 +13,19 @@ export default {
     type: 'perUserPerGuild',
   },
   callback: async ({ args, guild, message }: Props) => {
-    if (message.member.id === '441628048970743809') return message.react('🦣');
-    if (Math.floor(Math.random() * 6) + 1 === 6) {
-      const hour = 1000 * 60 * 60;
-      const timeouts = [hour * 6, hour * 12, hour * 24];
-      const timeoutPhrases = ['6 часов', '12 часов', '**сутки**'];
-      const index = Math.floor(Math.random() * 3);
-      try {
-        await message.member.timeout(timeouts[index], 'проебал в рулетку');
-        return { content: `${message.member.displayName} отлетает на ${timeoutPhrases[index]}` };
-      } catch (error) {
-        logChannel().send('```' + error + '```');
-        return message.react('🦣');
+    let random = Math.random();
+    for (let i = 0; timeouts.length; i++) {
+      if (random < timeouts[i].chance) {
+        if (!timeouts[i].hours) return { content: timeouts[i].message };
+        try {
+          await message.member.timeout(timeouts[i].hours * 3600000, 'проебал в рулетку');
+          return { content: `${message.member.displayName} отлетает на ${timeouts[i].message}` };
+        } catch (error) {
+          logChannel().send('```' + error + '```');
+          return message.react('🦣');
+        }
       }
+      random -= timeouts[i].chance;
     }
-    return { content: 'повезло тебе' };
   },
 } as CommandObject;
