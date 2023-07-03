@@ -11,11 +11,22 @@ export default {
       type: ApplicationCommandOptionType.User,
       required: false,
     },
+    {
+      name: 'type',
+      description: 'серверная или общая',
+      type: ApplicationCommandOptionType.String,
+      required: false,
+      autocomplete: true,
+    },
   ],
-  callback: ({ args, member, guild }: CommandUsage) => {
-    const user = guild.members.cache.get(args[0] || member.id);
-    return {
-      content: user.displayAvatarURL({ size: 512 }),
-    };
+  autocomplete: () => ['серверная', 'общая'],
+  callback: ({ interaction, member, guild }: CommandUsage) => {
+    const user = guild.members.cache.get(interaction.options.getUser('user')?.id || member.id);
+    const type = interaction.options.get('type')?.value || 'общая';
+    const avatar =
+      type === 'серверная'
+        ? user.displayAvatarURL({ size: 1024 })
+        : user.user.displayAvatarURL({ size: 1024 });
+    return avatar;
   },
 } as CommandObject;
