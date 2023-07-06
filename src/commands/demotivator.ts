@@ -13,36 +13,39 @@ export default {
     type: 'perGuild',
   },
   callback: async ({ args, guild, message }: Props) => {
-    try {
+    (async function genDemotivator() {
       message.channel.sendTyping();
-      const canvas = createCanvas(1280, 1024);
-      const template = await loadImage(
-        'https://cdn.discordapp.com/attachments/829357606224134174/888106080482238495/template.png',
-      );
-      const image = await loadImage(await getRandomImage(guild.id));
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(template, 0, 0);
-      ctx.drawImage(image, 118, 103, 1050, 710);
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.font = '72px Times New Roman';
-      const topText = await genFiltered(guild.id);
-      ctx.fillText(topText.slice(0, 30), canvas.width / 2, 886);
-      ctx.font = '40px Times New Roman';
-      const bottomText = await genFiltered(guild.id);
-      ctx.fillText(bottomText.slice(0, 60), canvas.width / 2, 966);
-      return {
-        files: [
-          {
-            attachment: canvas.toBuffer(),
-            name: 'image.png',
-          },
-        ],
-      };
-    } catch (error) {
-      logChannel().send(`\`\`\`json\n${error}\n\`\`\``);
-      return message.react('❌');
-    }
+      try {
+        const canvas = createCanvas(1280, 1024);
+        const template = await loadImage(
+          'https://cdn.discordapp.com/attachments/829357606224134174/888106080482238495/template.png',
+        );
+        const url = await getRandomImage(guild.id);
+        const image = await loadImage(url);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(template, 0, 0);
+        ctx.drawImage(image, 118, 103, 1050, 710);
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '72px Times New Roman';
+        const topText = await genFiltered(guild.id);
+        ctx.fillText(topText.slice(0, 30), canvas.width / 2, 886);
+        ctx.font = '40px Times New Roman';
+        const bottomText = await genFiltered(guild.id);
+        ctx.fillText(bottomText.slice(0, 60), canvas.width / 2, 966);
+        message.channel.send({
+          files: [
+            {
+              attachment: canvas.toBuffer(),
+              name: 'demotivator.png',
+            },
+          ],
+        });
+      } catch (error) {
+        logChannel().send(`\`\`\`json\n${error}\n\`\`\``);
+        genDemotivator();
+      }
+    })();
   },
 } as CommandObject;
