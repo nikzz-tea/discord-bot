@@ -10,9 +10,7 @@ export const getGuildName = (id: string) => {
   return guildName;
 };
 
-export const logChannel = () => {
-  return client.channels.cache.get(logChannelId) as TextChannel;
-};
+export const logChannel = client.channels.cache.get(logChannelId) as TextChannel;
 
 export const getMessages = async (id: string) => {
   const max = await Messages.count({ where: { guildId: id } });

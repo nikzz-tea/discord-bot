@@ -43,7 +43,7 @@ export default {
           ],
         });
       } catch (error) {
-        logChannel().send(`\`\`\`json\n${error}\n\`\`\``);
+        logChannel.send(`\`\`\`json\n${error}\n\`\`\``);
         genDemotivator();
       }
     })();

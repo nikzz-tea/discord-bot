@@ -15,7 +15,7 @@ export default {
         console.error(`exec error: ${error}`);
         return;
       }
-      logChannel().send(`\`\`\`${stdout}\`\`\``);
+      logChannel.send(`\`\`\`${stdout}\`\`\``);
     });
   },
 } as CommandObject;

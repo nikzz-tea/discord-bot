@@ -42,5 +42,5 @@ export default async (reaction: MessageReaction) => {
   const platMessage = await channelTo.send({ embeds: [emb] });
   Platina.create({ messageId: message.id });
   Platina.create({ messageId: platMessage.id });
-  logChannel().send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
+  logChannel.send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };
