@@ -1,4 +1,4 @@
-import { Attachment, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
 import { genString } from '../../utils';
 import { Images, Messages } from '../../database/models';
@@ -15,8 +15,14 @@ export default async (message: Message) => {
   count % genPerMessage === 0 &&
     message.channel.send(await genString(message.guild?.id as string, 10));
   const pushItem = (type: string) => {
-    if (type === 'messages')
-      Messages.create({ message: message.content, guildId: message.guildId });
+    if (type === 'messages') {
+      const { content } = message;
+      if (content.startsWith('||') && content.endsWith('||')) return;
+      Messages.create({
+        message: message.content.replace(/\|\|.*?\|\|/g, ''),
+        guildId: message.guildId,
+      });
+    }
     if (type === 'images') {
       const attachments = Array.from(message.attachments.values());
       attachments.forEach((attach) => {
