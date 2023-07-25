@@ -6,6 +6,7 @@ import { Images, Messages } from '../../database/models';
 let count = 0;
 
 export default async (message: Message) => {
+  if (message.author.id === message.client.user?.id) return;
   if (!saveFromChannels.includes(message.channel.id)) return;
   if (message.author.bot) return;
   if (message.content.startsWith(prefix)) return;

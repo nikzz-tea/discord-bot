@@ -3,6 +3,7 @@ import { name } from '../../config.json';
 import { genString } from '../../utils';
 
 export default async (message: Message) => {
+  if (message.author.id === message.client.user?.id) return;
   if (message.mentions.has(message.client.user))
     return message.reply(await genString(message.guild?.id as string, 3));
   if (message.content == '' || !message.content) return;
