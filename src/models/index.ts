@@ -26,6 +26,25 @@ export interface INovel {
   }[];
 }
 
+export interface IChar {
+  results: {
+    id: string;
+    name: string;
+    image?: { url: string };
+    description?: string;
+    height?: number;
+    weight?: number;
+    bust?: number;
+    waist?: number;
+    hips?: number;
+    cup?: string;
+    age?: string;
+    sex?: string[];
+    vns: { id: string; title: string }[];
+    traits: { id: string; name: string }[];
+  }[];
+}
+
 export interface IWeather {
   weather: {
     id: number;

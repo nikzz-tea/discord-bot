@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { INovel } from '../models';
+import { IChar, INovel } from '../models';
 
 export const vndbService = {
   async vnsByRating() {
@@ -30,6 +30,18 @@ export const vndbService = {
       page: 1,
     };
     const { data } = await axios.post<INovel>('https://api.vndb.org/kana/vn', query);
+    return data.results[0];
+  },
+  async getChar(searchQuery: string) {
+    const query = {
+      filters: ['search', '=', searchQuery],
+      fields:
+        'name, description, image.url, height, weight, bust, waist, hips, cup, age, sex, id, vns.title',
+      sort: 'searchrank',
+      results: 1,
+      page: 1,
+    };
+    const { data } = await axios.post<IChar>('https://api.vndb.org/kana/character', query);
     return data.results[0];
   },
 };
