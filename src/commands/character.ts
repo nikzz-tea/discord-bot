@@ -42,6 +42,7 @@ export default {
             : []),
           ...(data.weight ? [{ name: 'Weight', value: data.weight.toString(), inline: true }] : []),
           ...(data.height ? [{ name: 'Height', value: data.height.toString(), inline: true }] : []),
+          ...(data.cup ? [{ name: 'Cup', value: data.cup.toString(), inline: true }] : []),
           ...(data.bust ? [{ name: 'Bust', value: data.bust.toString(), inline: true }] : []),
           ...(data.waist ? [{ name: 'Waist', value: data.waist.toString(), inline: true }] : []),
           ...(data.hips ? [{ name: 'Hips', value: data.hips.toString(), inline: true }] : []),
@@ -50,6 +51,7 @@ export default {
         emb.setDescription(
           data.description
             .slice(0, data.description.indexOf('\n'))
+            .replace('https://vndb.org', '')
             .replace(/\[url=\/c(\d+)\](.*?)\[\/url\]/g, '[$2](https://vndb.org/c$1)'),
         );
       return {

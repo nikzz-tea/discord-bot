@@ -38,7 +38,7 @@ export interface IChar {
     waist?: number;
     hips?: number;
     cup?: string;
-    age?: string;
+    age?: number;
     sex?: string[];
     vns: { id: string; title: string }[];
     traits: { id: string; name: string }[];
