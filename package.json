@@ -15,6 +15,7 @@
     "canvas": "^2.11.2",
     "discord.js": "^14.10.2",
     "dotenv": "^16.0.3",
+    "jimp": "^0.22.10",
     "markov-generator": "^1.2.3",
     "moment": "^2.29.4",
     "pidusage": "^3.0.2",
