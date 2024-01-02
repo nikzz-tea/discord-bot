@@ -6,7 +6,7 @@ export default {
   type: CommandType.LEGACY,
   callback: ({ args, guild, message }: Props) => {
     const name = args[0];
-    let content;
+    let content: string;
     if (name !== undefined && args.slice(1).join() === '' && message.attachments.size > 0) {
       content = Array.from(message.attachments.values())[0].url;
     } else if (args.slice(1).join() !== '') {

@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from 'canvas';
+import { Image, createCanvas, loadImage } from 'canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { genFiltered, getRandomImage, logChannel } from '../utils';
@@ -20,9 +20,12 @@ export default {
         const template = await loadImage(
           'https://cdn.discordapp.com/attachments/829357606224134174/888106080482238495/template.png',
         );
-        const url =
-          Array.from(message.attachments.values())[0].url || (await getRandomImage(guild.id));
-        const image = await loadImage(url);
+        let image: Image;
+        try {
+          image = await loadImage(Array.from(message.attachments.values())[0].url);
+        } catch (error) {
+          image = await loadImage(await getRandomImage(guild.id));
+        }
         const ctx = canvas.getContext('2d');
         ctx.drawImage(template, 0, 0);
         ctx.drawImage(image, 118, 103, 1050, 710);
