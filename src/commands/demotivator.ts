@@ -5,7 +5,7 @@ import { genFiltered, getRandomImage, logChannel } from '../utils';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['демотиватор', 'дд'],
+  aliases: ['демотиватор', 'д'],
   reply: false,
   cooldowns: {
     duration: '3 s',
