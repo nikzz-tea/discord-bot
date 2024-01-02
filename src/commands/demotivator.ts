@@ -5,7 +5,7 @@ import { genFiltered, getRandomImage, logChannel } from '../utils';
 
 export default {
   type: CommandType.LEGACY,
-  aliases: ['демотиватор', 'д'],
+  aliases: ['демотиватор', 'дд'],
   reply: false,
   cooldowns: {
     duration: '3 s',
@@ -20,7 +20,8 @@ export default {
         const template = await loadImage(
           'https://cdn.discordapp.com/attachments/829357606224134174/888106080482238495/template.png',
         );
-        const url = await getRandomImage(guild.id);
+        const url =
+          Array.from(message.attachments.values())[0].url || (await getRandomImage(guild.id));
         const image = await loadImage(url);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(template, 0, 0);
