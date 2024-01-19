@@ -1,0 +1,61 @@
+{
+  "prefix": "!",
+  "name": "",
+  "logChannelId": "",
+  "ownerId": "",
+  "saveFromChannels": [""],
+  "genPerMessage": 0,
+  "mainChannels": {
+    "guildId": "channelId"
+  },
+  "platina": {
+    "emoteId": {
+      "guild": "",
+      "channel": "",
+      "req": 0
+    }
+  },
+  "roles": {
+    "guildId": {
+      "message": "",
+      "sheet": {
+        "emoteId": "roleId"
+      }
+    }
+  },
+  "memes": {
+    "0": {
+      "url": "https://cdn.discordapp.com/attachments/829357606224134174/1105106579046539385/template.png",
+      "size": [680, 538],
+      "boxes": [{ "size": [680, 538], "leftCorner": [0, 0] }]
+    },
+    "1": {
+      "url": "https://media.discordapp.net/attachments/829357606224134174/1105112217801719859/5.png",
+      "size": [1024, 638],
+      "boxes": [
+        { "size": [517, 524], "leftCorner": [0, 115] },
+        { "size": [494, 524], "leftCorner": [531, 115] }
+      ]
+    },
+    "2": {
+      "url": "https://cdn.discordapp.com/attachments/829357606224134174/1105112218053386290/10.png",
+      "size": [700, 709],
+      "boxes": [{ "size": [700, 555], "leftCorner": [0, 154] }]
+    },
+    "3": {
+      "url": "https://cdn.discordapp.com/attachments/829357606224134174/1105112218334417036/9.png",
+      "size": [700, 641],
+      "boxes": [{ "size": [700, 389], "leftCorner": [0, 0] }]
+    },
+    "4": {
+      "url": "https://cdn.discordapp.com/attachments/829357606224134174/1105112218795778128/12.png",
+      "size": [710, 591],
+      "boxes": [{ "size": [348, 396], "leftCorner": [363, 196] }]
+    },
+    "5": {
+      "url": "https://media.discordapp.net/attachments/829357606224134174/1106930987000135680/template.png",
+      "size": [1174, 1080],
+      "boxes": [{ "size": [579, 524], "leftCorner": [596, 557] }]
+    }
+  }
+}

@@ -3,4 +3,5 @@ node_modules
 db
 dist
 *.sqlite
+src/config.json
 yarn-error.log
