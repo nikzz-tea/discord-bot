@@ -3,6 +3,15 @@ import { Props } from '../models';
 import { vndbService } from '../services/vndb.service';
 import { EmbedBuilder } from 'discord.js';
 
+const replaceLinks = (input: string) => {
+  const pattern = /\[url=([^\]]+)\]([^\[]+)\[\/url\]/g;
+  const replacement = (match: string, url: string, label: string) => {
+    const absoluteUrl = url.startsWith('/') ? `https://vndb.org${url}` : url;
+    return `[${label}](${absoluteUrl})`;
+  };
+  return input.replace(pattern, replacement);
+};
+
 export default {
   type: CommandType.LEGACY,
   aliases: ['char'],
@@ -16,6 +25,7 @@ export default {
         .setURL(`https://vndb.org/${data.id}`)
         .setColor(message.member?.displayHexColor ?? 'Orange')
         .setThumbnail(data.image.url)
+        .setDescription(replaceLinks(data.description.slice(0, data.description.indexOf('\n'))))
         .addFields([
           ...(data.vns
             ? [
@@ -47,13 +57,6 @@ export default {
           ...(data.waist ? [{ name: 'Waist', value: data.waist.toString(), inline: true }] : []),
           ...(data.hips ? [{ name: 'Hips', value: data.hips.toString(), inline: true }] : []),
         ]);
-      if (data.description)
-        emb.setDescription(
-          data.description
-            .slice(0, data.description.indexOf('\n'))
-            .replace('https://vndb.org', '')
-            .replace(/\[url=\/c(\d+)\](.*?)\[\/url\]/g, '[$2](https://vndb.org/c$1)'),
-        );
       return {
         embeds: [emb],
       };
