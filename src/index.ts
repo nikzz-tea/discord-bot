@@ -3,8 +3,8 @@ import WOKCommands, { DefaultCommands } from 'wokcommands';
 import path from 'path';
 import dotenv from 'dotenv';
 import { vndbService } from './services/vndb.service';
-import { Commands, Images, Messages, Platina } from './database/models';
 import sequelize from './database';
+import getRandomVn from './utils/getRandomVn';
 
 dotenv.config();
 
@@ -13,11 +13,8 @@ const client = new Client({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
-client.once('ready', async () => {
-  sequelize.sync();
-});
-
-client.on('ready', () => {
+client.on('ready', async () => {
+  await sequelize.sync();
   new WOKCommands({
     client,
     commandsDir: path.join(__dirname, 'commands'),
@@ -31,19 +28,14 @@ client.on('ready', () => {
       DefaultCommands.ToggleCommand,
     ],
   });
-  console.log(`Logged as ${client.user?.tag}`);
-  vndbService.vnsByRating().then((statuses) => {
-    client.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], {
-      type: ActivityType.Playing,
-    });
-    setInterval(() => {
-      client.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], {
-        type: ActivityType.Playing,
-      });
-    }, 1000 * 60 * 60);
-  });
+  const statuses = await vndbService.vnsByRating();
+  client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
+  setInterval(() => {
+    client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
+  }, 1000 * 60 * 60);
+  console.log(`Logged as ${client.user.tag}`);
 });
 
-export default client;
-
 client.login(process.env.TOKEN);
+
+export default client;
