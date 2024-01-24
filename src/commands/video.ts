@@ -1,6 +1,6 @@
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { getMessages } from '../utils';
+import getMessages from '../utils/getMessages';
 
 export default {
   type: CommandType.LEGACY,

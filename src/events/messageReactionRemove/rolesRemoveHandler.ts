@@ -1,6 +1,6 @@
 import { MessageReaction, User } from 'discord.js';
 import { roles } from '../../config.json';
-import { logChannel } from '../../utils';
+import logChannel from '../../utils/logChannel';
 
 export default async (reaction: MessageReaction, user: User) => {
   if (reaction.message.id !== roles[reaction.message.guildId].message) return;

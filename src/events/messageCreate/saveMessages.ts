@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
-import { genString } from '../../utils';
 import { Images, Messages } from '../../database/models';
+import genString from '../../utils/genString';
 
 let count = 0;
 

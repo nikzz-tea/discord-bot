@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { name } from '../../config.json';
-import { genString } from '../../utils';
+import genString from '../../utils/genString';
 
 export default async (message: Message) => {
   if (message.author.id === message.client.user?.id) return;

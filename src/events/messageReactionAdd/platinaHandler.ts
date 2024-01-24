@@ -1,8 +1,8 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
 import { platina } from '../../config.json';
-import { logChannel } from '../../utils';
 import { Platina } from '../../database/models';
+import logChannel from '../../utils/logChannel';
 
 export default async (reaction: MessageReaction) => {
   if (!Object.keys(platina).includes(reaction.emoji.identifier)) return;

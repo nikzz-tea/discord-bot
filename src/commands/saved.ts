@@ -1,5 +1,4 @@
 import { CommandObject, CommandType } from 'wokcommands';
-import fs from 'fs';
 import { Props } from '../models';
 import { Messages } from '../database/models';
 

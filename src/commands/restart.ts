@@ -1,8 +1,8 @@
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { exec } from 'child_process';
-import { logChannel } from '../utils';
 import { ownerId } from '../config.json';
+import logChannel from '../utils/logChannel';
 
 export default {
   type: CommandType.LEGACY,

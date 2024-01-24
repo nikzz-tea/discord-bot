@@ -1,7 +1,9 @@
 import { Image, createCanvas, loadImage } from 'canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { genFiltered, getRandomImage, logChannel } from '../utils';
+import getRandomImage from '../utils/getRandomImage';
+import genFiltered from '../utils/genFiltered';
+import logChannel from '../utils/logChannel';
 
 export default {
   type: CommandType.LEGACY,

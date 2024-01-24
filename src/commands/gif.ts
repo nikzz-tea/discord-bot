@@ -1,7 +1,7 @@
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { logChannel } from '../utils';
 import { read, MIME_GIF } from 'jimp';
+import logChannel from '../utils/logChannel';
 
 export default {
   type: CommandType.LEGACY,
