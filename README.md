@@ -2,6 +2,8 @@
 
 ## src/config.json
 
+Since the Bot was not intended to be public it depends on the config file that is filled manually 
+
 ```json
 {
   "prefix": "!",
