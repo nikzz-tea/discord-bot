@@ -5,6 +5,8 @@ import { memes } from '../config.json';
 import getRandomImage from '../utils/getRandomImage';
 import logChannel from '../utils/logChannel';
 
+let retryCount = 0;
+
 export default {
   type: CommandType.LEGACY,
   aliases: ['мем'],
@@ -38,6 +40,8 @@ export default {
           ],
         });
       } catch (error) {
+        retryCount++;
+        if (retryCount >= 5) return message.react('❌');
         logChannel.send(`\`\`\`json\n${error}\n\`\`\``);
         genMeme();
       }

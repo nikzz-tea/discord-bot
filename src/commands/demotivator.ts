@@ -5,6 +5,8 @@ import getRandomImage from '../utils/getRandomImage';
 import genFiltered from '../utils/genFiltered';
 import logChannel from '../utils/logChannel';
 
+let retryCount = 0;
+
 export default {
   type: CommandType.LEGACY,
   aliases: ['демотиватор', 'д'],
@@ -49,6 +51,8 @@ export default {
           ],
         });
       } catch (error) {
+        retryCount++;
+        if (retryCount >= 5) return message.react('❌');
         logChannel.send(`\`\`\`json\n${error}\n\`\`\``);
         genDemotivator();
       }
