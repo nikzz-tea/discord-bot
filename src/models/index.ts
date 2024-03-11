@@ -65,3 +65,15 @@ export interface IWeather {
   };
   name: string;
 }
+
+export interface PM2Stats {
+  pid: number;
+  name: string;
+  pm2_env: {
+    pm_uptime: number;
+  };
+  monit: {
+    memory: number;
+    cpu: number;
+  };
+}
