@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { prefix, maxTokens, AIProfile } from '../config.json';
+import { prefix, maxTokens as max_tokens, AIProfile, AIModel as model } from '../config.json';
 import { openai } from '..';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
@@ -32,9 +32,9 @@ const genAIMessage = async (message: Message) => {
 
   const response = await openai.chat.completions
     .create({
-      model: 'gpt-3.5-turbo-16k',
+      model,
       messages,
-      max_tokens: maxTokens,
+      max_tokens,
     })
     .catch((e) => {
       console.error(e);

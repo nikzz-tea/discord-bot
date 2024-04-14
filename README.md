@@ -2,7 +2,7 @@
 
 ## src/config.json
 
-Since the Bot was not intended to be public it depends on the config file that is filled manually 
+Since the Bot was not intended to be public it depends on the config file that is filled manually
 
 ```json
 {
@@ -13,6 +13,11 @@ Since the Bot was not intended to be public it depends on the config file that i
   "saveFromChannels": [""],
   // Generate message per N messages
   "genPerMessage": 0,
+  // OpenAI API settings
+  "maxTokens": 0,
+  "AIModel": "",
+  "AIProfile": "",
+
   "mainChannels": {
     "guildId": "channelId"
   },
