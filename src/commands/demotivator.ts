@@ -21,9 +21,7 @@ export default {
       message.channel.sendTyping();
       try {
         const canvas = createCanvas(1280, 1024);
-        const template = await loadImage(
-          'https://cdn.discordapp.com/attachments/829357606224134174/1210584622715641876/template.png?ex=65eb17c9&is=65d8a2c9&hm=b99c8f254832cfc049420ad6719d2094a1304431a4a78ef0eafacc1c5d771467&',
-        );
+        const template = await loadImage('https://i.imgur.com/vPFTZT8.png');
         let image: Image;
         try {
           image = await loadImage(Array.from(message.attachments.values())[0].url);
