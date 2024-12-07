@@ -19,7 +19,6 @@
     "jimp": "^0.22.10",
     "markov-generator": "^1.2.3",
     "moment": "^2.29.4",
-    "openai": "^4.33.0",
     "sequelize": "^6.32.1",
     "sqlite3": "^5.1.6",
     "usetube": "^2.2.7",

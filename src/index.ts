@@ -5,17 +5,12 @@ import dotenv from 'dotenv';
 import { vndbService } from './services/vndb.service';
 import sequelize from './database';
 import getRandomVn from './utils/getRandomVn';
-import OpenAI from 'openai';
 
 dotenv.config();
 
 const client = new Client({
   intents: 34563,
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-});
-
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API,
 });
 
 client.on('ready', async () => {
