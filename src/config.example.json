@@ -5,6 +5,9 @@
   "ownerId": "",
   "saveFromChannels": [""],
   "genPerMessage": 0,
+  "maxTokens": 0,
+  "AIModel": "",
+  "AIProfile": "",
   "mainChannels": {
     "guildId": "channelId"
   },
