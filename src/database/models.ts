@@ -23,10 +23,12 @@ export const Messages = sequelize.define(
 export const Images = sequelize.define(
   'images',
   {
-    image: DataTypes.STRING,
+    channelId: DataTypes.STRING,
+    messageId: DataTypes.STRING,
+    index: DataTypes.INTEGER,
     guildId: DataTypes.STRING,
   },
-  { timestamps: false },
+  { timestamps: false, indexes: [{ unique: true, fields: ['messageId', 'index'] }] },
 );
 
 export const Platina = sequelize.define(

@@ -26,10 +26,12 @@ export default async (message: Message) => {
     }
     if (type === 'images') {
       const attachments = Array.from(message.attachments.values());
-      attachments.forEach((attach) => {
+      attachments.forEach((attach, index) => {
         if (attach.spoiler) return;
         Images.create({
-          image: attach.url,
+          channelId: message.channelId,
+          messageId: message.id,
+          index,
           guildId: message.guildId,
         });
       });
