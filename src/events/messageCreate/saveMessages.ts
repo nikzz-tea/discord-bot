@@ -26,8 +26,9 @@ export default async (message: Message) => {
     }
     if (type === 'images') {
       const attachments = Array.from(message.attachments.values());
-      attachments.forEach((attach, index) => {
-        if (attach.spoiler) return;
+      attachments.forEach(({ spoiler, contentType }, index) => {
+        if (spoiler) return;
+        if (contentType !== 'image/png' && contentType !== 'image/jpeg') return;
         Images.create({
           channelId: message.channelId,
           messageId: message.id,
