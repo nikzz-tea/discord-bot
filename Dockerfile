@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20 as build
 
 WORKDIR /app
 
@@ -10,4 +10,13 @@ COPY . .
 
 RUN yarn build
 
-CMD [ "yarn", "start" ]
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY --from=build /app/package.json /app/yarn.lock ./
+COPY --from=build /app/dist/ ./dist/
+
+RUN yarn --production
+
+CMD ["yarn", "start"]
