@@ -4,3 +4,4 @@ services:
     container_name: zakuro
     volumes:
       - ./db.sqlite:/app/db.sqlite
+      - ./.env:/app/.env
