@@ -1,0 +1,6 @@
+services:
+  zakuro:
+    build: .
+    container_name: zakuro
+    volumes:
+      - ./db.sqlite:/app/db.sqlite
