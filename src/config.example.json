@@ -8,6 +8,9 @@
   "mainChannels": {
     "guildId": "channelId"
   },
+  "roleFilter": {
+    "guildId": ["roleId"]
+  },
   "platina": {
     "emoteId": {
       "guild": "",
