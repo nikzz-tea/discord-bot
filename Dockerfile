@@ -14,6 +14,7 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+COPY --from=build /usr/share/fonts/ /usr/share/fonts/
 COPY --from=build /app/package.json /app/yarn.lock ./
 COPY --from=build /app/dist/ ./dist/
 
