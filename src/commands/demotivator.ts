@@ -1,4 +1,4 @@
-import { Image, createCanvas, loadImage } from 'canvas';
+import { Image, createCanvas, loadImage } from '@napi-rs/canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { Props } from '../models';
 import getRandomImage from '../utils/getRandomImage';
@@ -43,7 +43,7 @@ export default {
         message.channel.send({
           files: [
             {
-              attachment: canvas.toBuffer(),
+              attachment: canvas.toBuffer('image/png'),
               name: 'demotivator.png',
             },
           ],
