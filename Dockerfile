@@ -17,6 +17,6 @@ WORKDIR /app
 COPY --from=build /app/package.json /app/yarn.lock ./
 COPY --from=build /app/dist/ ./dist/
 
-RUN yarn --production
+RUN yarn --production --frozen-lockfile && yarn cache clean
 
 CMD ["yarn", "start"]
