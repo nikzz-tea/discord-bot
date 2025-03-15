@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 import { CommandObject, CommandType } from 'wokcommands';
 import { ITemplate, Props } from '../models';
 import { memes } from '../config.json';
@@ -34,7 +34,7 @@ export default {
         message.channel.send({
           files: [
             {
-              attachment: canvas.toBuffer(),
+              attachment: canvas.toBuffer('image/png'),
               name: 'meme.png',
             },
           ],
