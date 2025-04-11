@@ -31,10 +31,10 @@ export const Images = sequelize.define(
   { timestamps: false, indexes: [{ unique: true, fields: ['messageId', 'index'] }] },
 );
 
-export const Platina = sequelize.define(
-  'platina',
+export const Starboard = sequelize.define(
+  'starboard',
   {
     messageId: DataTypes.STRING,
   },
-  { timestamps: false },
+  { timestamps: false, freezeTableName: true },
 );

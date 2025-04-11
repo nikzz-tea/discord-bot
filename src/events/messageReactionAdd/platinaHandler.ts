@@ -1,24 +1,24 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
-import { platina } from '../../config.json';
-import { Platina } from '../../database/models';
+import { starboard } from '../../config.json';
+import { Starboard } from '../../database/models';
 import logChannel from '../../utils/logChannel';
 
 export default async (reaction: MessageReaction) => {
-  if (!Object.keys(platina).includes(reaction.emoji.identifier)) return;
-  if (platina[reaction.emoji.identifier].guild != reaction.message.guild.id) return;
-  if (platina[reaction.emoji.identifier].channel == reaction.message.channel.id) return;
+  if (!Object.keys(starboard).includes(reaction.emoji.identifier)) return;
+  if (starboard[reaction.emoji.identifier].guild != reaction.message.guild.id) return;
+  if (starboard[reaction.emoji.identifier].channel == reaction.message.channel.id) return;
   let message = reaction.message;
   if (reaction.message.partial) {
     message = await reaction.message.fetch();
     reaction = await reaction.fetch();
   }
-  if (reaction.count !== platina[reaction.emoji.identifier].req) return;
-  const table = await Platina.findAll({ attributes: ['messageId'] });
+  if (reaction.count !== starboard[reaction.emoji.identifier].req) return;
+  const table = await Starboard.findAll({ attributes: ['messageId'] });
   const ids = table.map((command) => command.get('messageId'));
   if (ids.includes(message.id)) return;
   const channelTo = message.client.channels.cache.get(
-    platina[reaction.emoji.identifier].channel,
+    starboard[reaction.emoji.identifier].channel,
   ) as TextChannel;
   const channelFrom = message.channel as TextChannel;
   const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
@@ -39,8 +39,8 @@ export default async (reaction: MessageReaction) => {
   if (message.content != '') {
     emb.setDescription(message.content);
   }
-  const platMessage = await channelTo.send({ embeds: [emb] });
-  Platina.create({ messageId: message.id });
-  Platina.create({ messageId: platMessage.id });
+  const finalMessage = await channelTo.send({ embeds: [emb] });
+  Starboard.create({ messageId: message.id });
+  Starboard.create({ messageId: finalMessage.id });
   logChannel.send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };

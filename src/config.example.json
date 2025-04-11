@@ -11,7 +11,7 @@
   "roleFilter": {
     "guildId": ["roleId"]
   },
-  "platina": {
+  "starboard": {
     "emoteId": {
       "guild": "",
       "channel": "",

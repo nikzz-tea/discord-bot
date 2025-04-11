@@ -17,7 +17,7 @@ Since the Bot was not intended to be public it depends on the config file that i
     "guildId": "channelId"
   },
   // When N emotes is reacted to message in X guild, post to Y channel
-  "platina": {
+  "starboard": {
     "emoteId": {
       "guild": "",
       "channel": "",
