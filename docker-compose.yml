@@ -2,6 +2,7 @@ services:
   zakuro:
     build: .
     container_name: zakuro
+    restart: unless-stopped
     volumes:
       - ./db.sqlite:/app/db.sqlite
       - ./.env:/app/.env
