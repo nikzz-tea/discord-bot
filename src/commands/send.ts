@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { ownerId } from '../config.json';
 import { TextChannel } from 'discord.js';
@@ -16,4 +16,4 @@ export default {
       return;
     }
   },
-} as CommandObject;
+};

@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import client from '..';
 
 export default {
@@ -9,4 +9,4 @@ export default {
       content: `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>`,
     };
   },
-} as CommandObject;
+};

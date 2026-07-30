@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { vndbService } from '../services/vndb.service';
@@ -32,4 +32,4 @@ export default {
       return message.react('❌');
     }
   },
-} as CommandObject;
+};

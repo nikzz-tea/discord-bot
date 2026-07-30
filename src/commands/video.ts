@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import getMessages from '../utils/getMessages';
 
@@ -13,4 +13,4 @@ export default {
       content: filtered[Math.floor(Math.random() * filtered.length)],
     };
   },
-} as CommandObject;
+};

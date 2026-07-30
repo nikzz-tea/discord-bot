@@ -1,5 +1,5 @@
 import { searchVideo } from 'usetube';
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 
 export default {
@@ -18,4 +18,4 @@ export default {
       }
     });
   },
-} as CommandObject;
+};

@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { Commands } from '../database/models';
 
@@ -15,4 +15,4 @@ export default {
     });
     message.react('✅');
   },
-} as CommandObject;
+};

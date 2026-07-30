@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { ITemplate, Props } from '../models';
 import { memes } from '../config.json';
 import getRandomImage from '../utils/getRandomImage';
@@ -48,4 +48,4 @@ export default {
       }
     })();
   },
-} as CommandObject;
+};

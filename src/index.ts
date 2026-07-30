@@ -16,7 +16,7 @@ const client = new Client({
 client.on('clientReady', async () => {
   await sequelize.sync();
   new WOKCommands({
-    client,
+    client: client as any,
     commandsDir: path.join(__dirname, 'commands'),
     events: { dir: path.join(__dirname, 'events') },
     disabledDefaultCommands: [

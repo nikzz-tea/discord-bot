@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { Messages } from '../database/models';
 
@@ -11,4 +11,4 @@ export default {
       content: count.toString(),
     };
   },
-} as CommandObject;
+};

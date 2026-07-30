@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { weatherService } from '../services/weather.service';
@@ -30,4 +30,4 @@ export default {
       return message.react('❌');
     }
   },
-} as CommandObject;
+};

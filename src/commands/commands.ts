@@ -1,4 +1,4 @@
-import { CommandObject, CommandType } from 'wokcommands';
+import { CommandType } from 'wokcommands';
 import { Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { Commands } from '../database/models';
@@ -18,4 +18,4 @@ export default {
       embeds: [emb],
     };
   },
-} as CommandObject;
+};
