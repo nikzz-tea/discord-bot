@@ -9,6 +9,7 @@ export default async (message: Message) => {
   if (message.content == '' || !message.content) return;
   if (!message.content.toLowerCase().startsWith(name)) return;
   if (message.content.toLowerCase().startsWith(`${name} кто`)) return;
+  if (!message.channel.isSendable()) return;
   message.channel.sendTyping();
   message.channel.send(await genString(message.guild?.id as string, 3));
 };

@@ -10,5 +10,6 @@ export default async (message: Message) => {
     where: { name, guildId: message.guildId },
   });
   if (!command) return;
+  if (!message.channel.isSendable()) return;
   message.channel.send(command.content);
 };

@@ -18,6 +18,7 @@ export default {
   },
   callback: async ({ args, guild, message }: Props) => {
     (async function genDemotivator() {
+      if (!message.channel.isSendable()) return;
       message.channel.sendTyping();
       try {
         const canvas = createCanvas(1280, 1024);

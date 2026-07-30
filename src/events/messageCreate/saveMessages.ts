@@ -14,6 +14,7 @@ export default async (message: Message) => {
   if (message.content.startsWith(`${name} кто`)) return;
   count++;
   count % genPerMessage === 0 &&
+    message.channel.isSendable() &&
     message.channel.send(await genString(message.guild?.id as string, 10));
   const pushItem = (type: string) => {
     if (type === 'messages') {

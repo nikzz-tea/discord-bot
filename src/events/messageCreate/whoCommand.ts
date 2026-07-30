@@ -6,6 +6,7 @@ export default async (message: Message) => {
   if (!message.content.toLowerCase().startsWith(`${name} кто`)) return;
   const members = Array.from(await message.guild?.members.fetch());
   const sendMessage = (array: [string, GuildMember][]) => {
+    if (!message.channel.isSendable()) return;
     const randomUsername = array[Math.floor(Math.random() * array.length)][1].user.username;
     message.channel.send('я думаю это ' + randomUsername);
   };

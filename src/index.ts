@@ -13,7 +13,7 @@ const client = new Client({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
-client.on('ready', async () => {
+client.on('clientReady', async () => {
   await sequelize.sync();
   new WOKCommands({
     client,

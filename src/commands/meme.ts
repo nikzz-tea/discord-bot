@@ -18,6 +18,7 @@ export default {
   },
   callback: async ({ args, guild, message }: Props) => {
     (async function genMeme() {
+      if (!message.channel.isSendable()) return;
       message.channel.sendTyping();
       try {
         const template = memes[

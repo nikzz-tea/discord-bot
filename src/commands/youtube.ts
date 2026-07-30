@@ -11,6 +11,7 @@ export default {
     const keywords = args.join(' ');
     searchVideo(keywords).then((res) => {
       try {
+        if (!message.channel.isSendable()) return;
         message.channel.send(`https://youtu.be/${res.videos[0].id}`);
       } catch (error) {
         return message.react('❌');
