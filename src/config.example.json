@@ -1,7 +1,6 @@
 {
   "prefix": "!",
   "name": "",
-  "logChannelId": "",
   "ownerId": "",
   "saveFromChannels": [""],
   "genPerMessage": 0,
