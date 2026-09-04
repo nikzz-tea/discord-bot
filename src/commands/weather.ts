@@ -1,14 +1,12 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { weatherService } from '../services/weather.service';
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['погода'],
-  reply: false,
-  callback: async ({ args, guild, message }: Props) => {
+  callback: async ({ args, message }: Props) => {
     if (!args.length) return message.react('❌');
+    if (!message.channel.isSendable()) return;
     try {
       const data = await weatherService.getWeather(args.join(' '));
       const emb = new EmbedBuilder()
@@ -23,11 +21,9 @@ export default {
           { name: 'Ветер', value: `${data.wind.speed}м/с`, inline: true },
           { name: 'Влажность', value: `${data.main.humidity}%`, inline: true },
         ]);
-      return {
-        embeds: [emb],
-      };
+      message.channel.send({ embeds: [emb] });
     } catch (error) {
       return message.react('❌');
     }
   },
-};
+} satisfies CommandObject;

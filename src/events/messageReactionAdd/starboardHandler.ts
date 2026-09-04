@@ -3,7 +3,6 @@ import moment from 'moment';
 import { starboard } from '../../config.json';
 import { Starboard } from '../../database/schema';
 import { db } from '../../database';
-import logChannel from '../../utils/logChannel';
 
 export default async (reaction: MessageReaction) => {
   if (!Object.keys(starboard).includes(reaction.emoji.identifier)) return;
@@ -46,5 +45,4 @@ export default async (reaction: MessageReaction) => {
   const finalMessage = await channelTo.send({ embeds: [emb] });
   db.insert(Starboard).values({ messageId: message.id }).run();
   db.insert(Starboard).values({ messageId: finalMessage.id }).run();
-  logChannel.send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };

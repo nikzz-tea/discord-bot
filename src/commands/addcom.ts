@@ -1,10 +1,8 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { Commands } from '../database/schema';
 import { db } from '../database';
 
 export default {
-  type: CommandType.LEGACY,
   callback: ({ args, guild, message }: Props) => {
     const name = args[0];
     let content: string;
@@ -24,4 +22,4 @@ export default {
       .run();
     message.react('✅');
   },
-};
+} satisfies CommandObject;

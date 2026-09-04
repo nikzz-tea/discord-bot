@@ -1,12 +1,8 @@
-import { CommandType } from 'wokcommands';
-import client from '..';
+import { CommandObject, Props } from '../models';
 
 export default {
-  type: CommandType.LEGACY,
-  reply: false,
-  callback: () => {
-    return {
-      content: `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>`,
-    };
+  callback: ({ message }: Props) => {
+    if (!message.channel.isSendable()) return;
+    message.channel.send(`<t:${Math.round((Date.now() - message.client.uptime) / 1000)}:R>`);
   },
-};
+} satisfies CommandObject;

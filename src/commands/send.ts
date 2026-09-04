@@ -1,12 +1,9 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { ownerId } from '../config.json';
 import { TextChannel } from 'discord.js';
 
 export default {
-  type: CommandType.LEGACY,
-  reply: false,
-  callback: ({ args, guild, message }: Props) => {
+  callback: ({ args, message }: Props) => {
     if (message.author.id !== ownerId) return;
     if (!args.length) return;
     try {
@@ -16,4 +13,4 @@ export default {
       return;
     }
   },
-};
+} satisfies CommandObject;

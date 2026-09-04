@@ -1,10 +1,9 @@
-import { TextChannel } from 'discord.js';
-import client from '..';
+import { Client, TextChannel } from 'discord.js';
 import { eq, sql } from 'drizzle-orm';
 import { Images } from '../database/schema';
 import { db } from '../database';
 
-const getRandomImage = async (id: string) => {
+const getRandomImage = async (client: Client, id: string) => {
   const entry = db
     .select()
     .from(Images)

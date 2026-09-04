@@ -1,11 +1,9 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { and, eq } from 'drizzle-orm';
 import { Commands } from '../database/schema';
 import { db } from '../database';
 
 export default {
-  type: CommandType.LEGACY,
   callback: ({ args, guild, message }: Props) => {
     const name = args[0];
     if (name === undefined) return;
@@ -14,4 +12,4 @@ export default {
       .run();
     message.react('✅');
   },
-};
+} satisfies CommandObject;

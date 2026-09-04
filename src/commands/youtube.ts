@@ -1,12 +1,9 @@
 import { searchVideo } from 'usetube';
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['yt'],
-  reply: false,
-  callback: ({ args, guild, message }: Props) => {
+  callback: ({ args, message }: Props) => {
     if (!args.length) return message.react('❌');
     const keywords = args.join(' ');
     searchVideo(keywords).then((res) => {
@@ -18,4 +15,4 @@ export default {
       }
     });
   },
-};
+} satisfies CommandObject;

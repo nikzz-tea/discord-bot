@@ -1,22 +1,17 @@
 import { Image, createCanvas, loadImage } from '@napi-rs/canvas';
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import getRandomImage from '../utils/getRandomImage';
 import genFiltered from '../utils/genFiltered';
-import logChannel from '../utils/logChannel';
 
 let retryCount = 0;
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['демотиватор', 'д'],
-  reply: false,
   cooldowns: {
-    duration: '3 s',
+    seconds: 3,
     errorMessage: 'подожди кд',
-    type: 'perGuild',
   },
-  callback: async ({ args, guild, message }: Props) => {
+  callback: async ({ guild, message }: Props) => {
     (async function genDemotivator() {
       if (!message.channel.isSendable()) return;
       message.channel.sendTyping();
@@ -27,7 +22,7 @@ export default {
         try {
           image = await loadImage(Array.from(message.attachments.values())[0].url);
         } catch (error) {
-          image = await loadImage(await getRandomImage(guild.id));
+          image = await loadImage(await getRandomImage(message.client, guild.id));
         }
         const ctx = canvas.getContext('2d');
         ctx.drawImage(template, 0, 0);
@@ -52,9 +47,9 @@ export default {
       } catch (error) {
         retryCount++;
         if (retryCount >= 5) return message.react('❌');
-        logChannel.send(`\`\`\`json\n${error}\n\`\`\``);
+        console.error(error);
         genDemotivator();
       }
     })();
   },
-};
+} satisfies CommandObject;

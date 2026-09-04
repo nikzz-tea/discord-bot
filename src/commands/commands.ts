@@ -1,15 +1,13 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { eq } from 'drizzle-orm';
 import { Commands } from '../database/schema';
 import { db } from '../database';
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['команды'],
-  reply: false,
-  callback: async ({ args, guild, message }: Props) => {
+  callback: ({ guild, message }: Props) => {
+    if (!message.channel.isSendable()) return;
     const commands = db
       .select({ name: Commands.name })
       .from(Commands)
@@ -20,8 +18,6 @@ export default {
       .setTitle('Список кастомных команд')
       .setDescription(names.sort().join(', '))
       .setColor('Aqua');
-    return {
-      embeds: [emb],
-    };
+    message.channel.send({ embeds: [emb] });
   },
-};
+} satisfies CommandObject;

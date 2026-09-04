@@ -1,15 +1,13 @@
-import { CommandType } from 'wokcommands';
-import { Props } from '../models';
+import { CommandObject, Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { vndbService } from '../services/vndb.service';
 import formatHyperlinks from '../utils/formatHyperlinks';
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['вн'],
-  reply: false,
-  callback: async ({ args, guild, message }: Props) => {
+  callback: async ({ args, message }: Props) => {
     if (!args.length) return message.react('❌');
+    if (!message.channel.isSendable()) return;
     try {
       const data = await vndbService.getVn(args.join(' '));
       const rating = (data.rating / 10).toFixed(2).toString();
@@ -25,11 +23,9 @@ export default {
           { name: 'Play time', value: playtime, inline: true },
           { name: 'Rating', value: rating, inline: true },
         ]);
-      return {
-        embeds: [emb],
-      };
+      message.channel.send({ embeds: [emb] });
     } catch (error) {
       return message.react('❌');
     }
   },
-};
+} satisfies CommandObject;
