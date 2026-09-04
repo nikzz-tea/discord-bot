@@ -1,12 +1,17 @@
 import { TextChannel } from 'discord.js';
 import client from '..';
-import sequelize from '../database';
-import { Images } from '../database/models';
+import { eq, sql } from 'drizzle-orm';
+import { Images } from '../database/schema';
+import { db } from '../database';
 
 const getRandomImage = async (id: string) => {
-  const entry = (
-    await Images.findOne({ order: sequelize.random(), where: { guildId: id } })
-  ).toJSON();
+  const entry = db
+    .select()
+    .from(Images)
+    .where(eq(Images.guildId, id))
+    .orderBy(sql`random()`)
+    .limit(1)
+    .get();
   const channel = (await client.channels.fetch(entry.channelId)) as TextChannel;
   const message = await channel.messages.fetch(entry.messageId);
   const attachments = Array.from(message.attachments.values());

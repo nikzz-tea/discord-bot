@@ -3,7 +3,7 @@ import WOKCommands, { DefaultCommands } from 'wokcommands';
 import path from 'path';
 import dotenv from 'dotenv';
 import { vndbService } from './services/vndb.service';
-import sequelize from './database';
+import syncSchema from './database';
 import getRandomVn from './utils/getRandomVn';
 
 dotenv.config();
@@ -14,7 +14,7 @@ const client = new Client({
 });
 
 client.on('clientReady', async () => {
-  await sequelize.sync();
+  syncSchema();
   new WOKCommands({
     client: client as any,
     commandsDir: path.join(__dirname, 'commands'),

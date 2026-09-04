@@ -1,18 +1,17 @@
 import { CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { Commands } from '../database/models';
+import { and, eq } from 'drizzle-orm';
+import { Commands } from '../database/schema';
+import { db } from '../database';
 
 export default {
   type: CommandType.LEGACY,
   callback: ({ args, guild, message }: Props) => {
     const name = args[0];
     if (name === undefined) return;
-    Commands.destroy({
-      where: {
-        name,
-        guildId: guild.id,
-      },
-    });
+    db.delete(Commands)
+      .where(and(eq(Commands.name, name), eq(Commands.guildId, guild.id)))
+      .run();
     message.react('✅');
   },
 };

@@ -1,6 +1,7 @@
 import { CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { Commands } from '../database/models';
+import { Commands } from '../database/schema';
+import { db } from '../database';
 
 export default {
   type: CommandType.LEGACY,
@@ -14,11 +15,13 @@ export default {
     } else {
       return;
     }
-    Commands.upsert({
-      name,
-      content,
-      guildId: guild.id,
-    });
+    db.insert(Commands)
+      .values({ name, content, guildId: guild.id })
+      .onConflictDoUpdate({
+        target: [Commands.name, Commands.guildId],
+        set: { content },
+      })
+      .run();
     message.react('✅');
   },
 };

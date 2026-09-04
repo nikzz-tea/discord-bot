@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
-import { Images, Messages } from '../../database/models';
+import { Images, Messages } from '../../database/schema';
+import { db } from '../../database';
 import genString from '../../utils/genString';
 
 let count = 0;
@@ -20,22 +21,26 @@ export default async (message: Message) => {
     if (type === 'messages') {
       const { content } = message;
       if (content.startsWith('||') && content.endsWith('||')) return;
-      Messages.create({
-        message: message.content.replace(/\|\|.*?\|\|/g, ''),
-        guildId: message.guildId,
-      });
+      db.insert(Messages)
+        .values({
+          message: message.content.replace(/\|\|.*?\|\|/g, ''),
+          guildId: message.guildId,
+        })
+        .run();
     }
     if (type === 'images') {
       const attachments = Array.from(message.attachments.values());
       attachments.forEach(({ spoiler, contentType }, index) => {
         if (spoiler) return;
         if (contentType !== 'image/png' && contentType !== 'image/jpeg') return;
-        Images.create({
-          channelId: message.channelId,
-          messageId: message.id,
-          index,
-          guildId: message.guildId,
-        });
+        db.insert(Images)
+          .values({
+            channelId: message.channelId,
+            messageId: message.id,
+            index,
+            guildId: message.guildId,
+          })
+          .run();
       });
     }
   };

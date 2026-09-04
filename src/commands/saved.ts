@@ -1,14 +1,20 @@
 import { CommandType } from 'wokcommands';
 import { Props } from '../models';
-import { Messages } from '../database/models';
+import { count, eq } from 'drizzle-orm';
+import { Messages } from '../database/schema';
+import { db } from '../database';
 
 export default {
   type: CommandType.LEGACY,
   reply: false,
   callback: async ({ args, guild, message }: Props) => {
-    const count = await Messages.count({ where: { guildId: guild.id } });
+    const result = db
+      .select({ count: count() })
+      .from(Messages)
+      .where(eq(Messages.guildId, guild.id))
+      .get();
     return {
-      content: count.toString(),
+      content: String(result?.count ?? 0),
     };
   },
 };

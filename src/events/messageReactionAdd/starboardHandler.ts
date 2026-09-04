@@ -1,7 +1,8 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
 import { starboard } from '../../config.json';
-import { Starboard } from '../../database/models';
+import { Starboard } from '../../database/schema';
+import { db } from '../../database';
 import logChannel from '../../utils/logChannel';
 
 export default async (reaction: MessageReaction) => {
@@ -14,8 +15,11 @@ export default async (reaction: MessageReaction) => {
     reaction = await reaction.fetch();
   }
   if (reaction.count !== starboard[reaction.emoji.identifier].req) return;
-  const table = await Starboard.findAll({ attributes: ['messageId'] });
-  const ids = table.map((command) => command.get('messageId'));
+  const ids = db
+    .select({ messageId: Starboard.messageId })
+    .from(Starboard)
+    .all()
+    .map((entry) => entry.messageId);
   if (ids.includes(message.id)) return;
   const channelTo = message.client.channels.cache.get(
     starboard[reaction.emoji.identifier].channel,
@@ -40,7 +44,7 @@ export default async (reaction: MessageReaction) => {
     emb.setDescription(message.content);
   }
   const finalMessage = await channelTo.send({ embeds: [emb] });
-  Starboard.create({ messageId: message.id });
-  Starboard.create({ messageId: finalMessage.id });
+  db.insert(Starboard).values({ messageId: message.id }).run();
+  db.insert(Starboard).values({ messageId: finalMessage.id }).run();
   logChannel.send(`**${reaction.message.guild.name}:**\nPosted: ${message.url}`);
 };
