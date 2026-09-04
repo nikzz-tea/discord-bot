@@ -1,7 +1,6 @@
 {
   "prefix": "!",
   "name": "",
-  "ownerId": "",
   "saveFromChannels": [""],
   "genPerMessage": 0,
   "mainChannels": {

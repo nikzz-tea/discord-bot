@@ -8,7 +8,6 @@ Since the Bot was not intended to be public it depends on the config file that i
 {
   "prefix": "!",
   "name": "",
-  "ownerId": "",
   "saveFromChannels": [""],
   // Generate message per N messages
   "genPerMessage": 0,
