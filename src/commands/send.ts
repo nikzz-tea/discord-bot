@@ -1,5 +1,5 @@
 import { CommandObject, Props } from '../models';
-import { ownerId } from '../config.json';
+import { ownerId } from '../config';
 import { TextChannel } from 'discord.js';
 
 export default {

@@ -10,15 +10,19 @@ export default {
     if (!message.channel.isSendable()) return;
     try {
       const data = await vndbService.getVn(args.join(' '));
-      const rating = (data.rating / 10).toFixed(2).toString();
-      const hours = Math.floor(data.length_minutes / 60);
-      const minutes = data.length_minutes % 60;
-      const playtime = `${hours}h ${minutes}m`;
+      const rating = data.rating != null ? (data.rating / 10).toFixed(2) : 'N/A';
+      const lengthMinutes = data.length_minutes;
+      const hours = lengthMinutes != null ? Math.floor(lengthMinutes / 60) : 0;
+      const minutes = lengthMinutes != null ? lengthMinutes % 60 : 0;
+      const playtime = lengthMinutes != null ? `${hours}h ${minutes}m` : 'N/A';
+      const description = data.description
+        ? formatHyperlinks(data.description.slice(0, data.description.indexOf('\n')))
+        : null;
       const emb = new EmbedBuilder()
         .setAuthor({ name: data.title, url: `https://vndb.org/${data.id}` })
         .setColor(message.member?.displayHexColor ?? 'Orange')
-        .setDescription(formatHyperlinks(data.description.slice(0, data.description.indexOf('\n'))))
-        .setThumbnail(data.image.url)
+        .setDescription(description)
+        .setThumbnail(data.image?.url ?? null)
         .addFields([
           { name: 'Play time', value: playtime, inline: true },
           { name: 'Rating', value: rating, inline: true },

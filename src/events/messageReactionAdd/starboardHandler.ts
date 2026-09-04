@@ -1,28 +1,28 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import moment from 'moment';
-import { starboard } from '../../config.json';
+import { starboard } from '../../config';
 import { Starboard } from '../../database/schema';
 import { db } from '../../database';
 
 export default async (reaction: MessageReaction) => {
-  if (!Object.keys(starboard).includes(reaction.emoji.identifier)) return;
-  if (starboard[reaction.emoji.identifier].guild != reaction.message.guild.id) return;
-  if (starboard[reaction.emoji.identifier].channel == reaction.message.channel.id) return;
+  const config = starboard[reaction.emoji.identifier];
+  if (!config) return;
+  const guildId = reaction.message.guildId;
+  if (!guildId || config.guild !== guildId) return;
+  if (config.channel == reaction.message.channel.id) return;
   let message = reaction.message;
   if (reaction.message.partial) {
     message = await reaction.message.fetch();
     reaction = await reaction.fetch();
   }
-  if (reaction.count !== starboard[reaction.emoji.identifier].req) return;
+  if (reaction.count !== config.req) return;
   const ids = db
     .select({ messageId: Starboard.messageId })
     .from(Starboard)
     .all()
     .map((entry) => entry.messageId);
   if (ids.includes(message.id)) return;
-  const channelTo = message.client.channels.cache.get(
-    starboard[reaction.emoji.identifier].channel,
-  ) as TextChannel;
+  const channelTo = message.client.channels.cache.get(config.channel) as TextChannel;
   const channelFrom = message.channel as TextChannel;
   const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
   const emb = new EmbedBuilder()

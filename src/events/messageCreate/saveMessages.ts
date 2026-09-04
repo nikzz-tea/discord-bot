@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { name, prefix, saveFromChannels, genPerMessage } from '../../config.json';
+import { name, prefix, saveFromChannels, genPerMessage } from '../../config';
 import { Images, Messages } from '../../database/schema';
 import { db } from '../../database';
 import genString from '../../utils/genString';

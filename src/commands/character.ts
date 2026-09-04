@@ -10,17 +10,21 @@ export default {
     if (!message.channel.isSendable()) return;
     try {
       const data = await vndbService.getChar(args.join(' '));
-      const description = formatHyperlinks(
-        data.description.slice(0, data.description.indexOf('\n')),
-      );
+      const description = data.description
+        ? formatHyperlinks(data.description.slice(0, data.description.indexOf('\n')))
+        : null;
       const from = `[${data.vns[0].title}](https://vndb.org/${data.vns[0].id})`;
       const gender =
-        data.sex[0] === 'f' ? ':female_sign:' : data.sex[0] === 'm' ? ':male_sign:' : '❓';
+        data.sex?.[0] === 'f'
+          ? ':female_sign:'
+          : data.sex?.[0] === 'm'
+            ? ':male_sign:'
+            : '❓';
       const emb = new EmbedBuilder()
         .setTitle(data.name)
         .setURL(`https://vndb.org/${data.id}`)
         .setColor(message.member?.displayHexColor ?? 'Orange')
-        .setThumbnail(data.image.url)
+        .setThumbnail(data.image?.url ?? null)
         .setDescription(description)
         .addFields([
           ...(data.vns ? [{ name: 'From', value: from }] : []),

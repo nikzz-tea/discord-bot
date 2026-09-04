@@ -1,6 +1,6 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { CommandObject, ITemplate, Props } from '../models';
-import { memes } from '../config.json';
+import { CommandObject, Props } from '../models';
+import { memes } from '../config';
 import getRandomImage from '../utils/getRandomImage';
 
 let retryCount = 0;
@@ -18,7 +18,7 @@ export default {
       try {
         const template = memes[
           Object.keys(memes)[Math.floor(Math.random() * Object.keys(memes).length)]
-        ] as ITemplate;
+        ];
         const canvas = createCanvas(template.size[0], template.size[1]);
         const canvasTemplate = await loadImage(template.url);
         const ctx = canvas.getContext('2d');

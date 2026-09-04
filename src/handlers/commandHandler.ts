@@ -1,7 +1,7 @@
 import type { Client } from 'discord.js';
 import { pathToFileURL } from 'url';
 import path from 'path';
-import { prefix } from '../config.json';
+import { prefix } from '../config';
 import type { CommandObject, SlashCommandObject } from '../models';
 import getFiles from '../utils/getFiles';
 
@@ -82,6 +82,8 @@ export default async (client: Client) => {
     }
   });
 
-  await client.application.commands.set(slashCommands.map((command) => command.data.toJSON()));
-  console.info(`Registered ${slashCommands.length} slash command(s)`);
+  if (client.application) {
+    await client.application.commands.set(slashCommands.map((command) => command.data.toJSON()));
+    console.info(`Registered ${slashCommands.length} slash command(s)`);
+  }
 };

@@ -18,14 +18,16 @@ client.on('clientReady', async () => {
   await commandHandler(client);
   await eventHandler(client);
   const statuses = await vndbService.vnsByRating();
-  client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
-  setInterval(
-    () => {
-      client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
-    },
-    1000 * 60 * 60,
-  );
-  console.log(`Logged as ${client.user.tag}`);
+  const setActivity = () => {
+    if (!statuses?.length) return;
+    client.user?.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
+  };
+  setActivity();
+  setInterval(setActivity, 1000 * 60 * 60);
+  const user = client.user;
+  if (user) {
+    console.log(`Logged as ${user.tag}`);
+  }
 });
 
 client.login(process.env.TOKEN);

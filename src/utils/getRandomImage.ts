@@ -11,10 +11,15 @@ const getRandomImage = async (client: Client, id: string) => {
     .orderBy(sql`random()`)
     .limit(1)
     .get();
-  const channel = (await client.channels.fetch(entry.channelId)) as TextChannel;
-  const message = await channel.messages.fetch(entry.messageId);
+  if (!entry) throw new Error(`No saved image for guild ${id}`);
+  const { channelId, messageId, index } = entry;
+  if (!channelId || !messageId || index == null) {
+    throw new Error('Incomplete image record');
+  }
+  const channel = (await client.channels.fetch(channelId)) as TextChannel;
+  const message = await channel.messages.fetch(messageId);
   const attachments = Array.from(message.attachments.values());
-  return attachments[entry.index].url;
+  return attachments[index].url;
 };
 
 export default getRandomImage;

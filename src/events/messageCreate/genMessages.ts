@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { name } from '../../config.json';
+import { name } from '../../config';
 import genString from '../../utils/genString';
 
 export default async (message: Message) => {
