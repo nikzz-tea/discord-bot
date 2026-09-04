@@ -1,5 +1,4 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
-import moment from 'moment';
 import { starboard } from '../../config';
 import { Starboard } from '../../database/schema';
 import { db } from '../../database';
@@ -24,7 +23,9 @@ export default async (reaction: MessageReaction) => {
   if (ids.includes(message.id)) return;
   const channelTo = message.client.channels.cache.get(config.channel) as TextChannel;
   const channelFrom = message.channel as TextChannel;
-  const timestamp = moment(message.createdAt).format('DD[.]MM[.]YY');
+  const timestamp = message.createdAt.toLocaleDateString(
+    "en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' }
+  )
   const emb = new EmbedBuilder()
     .setColor(message.member?.displayHexColor ?? 'Aqua')
     .setAuthor({
