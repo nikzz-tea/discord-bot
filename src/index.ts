@@ -1,12 +1,9 @@
 import { ActivityType, Client, Partials } from 'discord.js';
-import dotenv from 'dotenv';
 import syncSchema from './database';
 import commandHandler from './handlers/commandHandler';
 import eventHandler from './handlers/eventHandler';
 import { vndbService } from './services/vndb.service';
 import getRandomVn from './utils/getRandomVn';
-
-dotenv.config();
 
 const client = new Client({
   intents: 34563,

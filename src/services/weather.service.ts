@@ -1,8 +1,5 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import { IWeather } from '../models';
-
-dotenv.config();
 
 export const weatherService = {
   async getWeather(location: string) {
