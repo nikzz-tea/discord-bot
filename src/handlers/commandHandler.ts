@@ -1,32 +1,15 @@
 import type { Client } from 'discord.js';
-import path from 'path';
-import { pathToFileURL } from 'url';
+import { prefixCommands, slashCommands } from '../commands';
 import { prefix } from '../config';
-import type { CommandObject, SlashCommandObject } from '../models';
-import { getFiles, logger } from '../utils';
+import type { CommandObject } from '../models';
+import { logger } from '../utils';
 
 const cooldowns = new Map<string, number>();
 
 export default async (client: Client) => {
   const commands = new Map<string, CommandObject>();
-  const slashCommands: SlashCommandObject[] = [];
-
-  for (const file of getFiles(path.join(__dirname, '..', 'commands'))) {
-    const module = (await import(pathToFileURL(file).href)) as {
-      default: CommandObject | SlashCommandObject;
-    };
-    const command = module.default;
-
-    if ('data' in command) {
-      slashCommands.push(command);
-      continue;
-    }
-
-    const name = path
-      .basename(file)
-      .replace(/\.(ts|js)$/, '')
-      .toLowerCase();
-    commands.set(name, command);
+  for (const command of prefixCommands) {
+    commands.set(command.name, command);
     for (const alias of command.aliases ?? []) {
       commands.set(alias.toLowerCase(), command);
     }

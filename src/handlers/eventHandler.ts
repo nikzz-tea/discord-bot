@@ -1,19 +1,14 @@
 import type { Client } from 'discord.js';
-import path from 'path';
-import { pathToFileURL } from 'url';
-import { getFiles, logger } from '../utils';
-
-type Handler = (...args: any[]) => unknown;
+import { eventHandlers } from '../events';
+import type { EventHandler } from '../models';
+import { logger } from '../utils';
 
 export default async (client: Client) => {
-  const events = new Map<string, Handler[]>();
-
-  for (const file of getFiles(path.join(__dirname, '..', 'events'))) {
-    const eventName = path.basename(path.dirname(file));
-    const module = (await import(pathToFileURL(file).href)) as { default: Handler };
-    const handlers = events.get(eventName) ?? [];
-    handlers.push(module.default);
-    events.set(eventName, handlers);
+  const events = new Map<string, EventHandler[]>();
+  for (const { event, handler } of eventHandlers) {
+    const handlers = events.get(event) ?? [];
+    handlers.push(handler);
+    events.set(event, handlers);
   }
 
   for (const [eventName, handlers] of events) {
