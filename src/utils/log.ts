@@ -16,7 +16,7 @@ const print = (color: string, tag: string, message: string) => {
   console.log(`${c('gray', `[${timestamp()}]`)} ${c(color, tag)} ${message}`);
 };
 
-export default {
+export const logger = {
   info: (message: string) => print('green', '[info]', message),
   command: (message: string) => print('cyan', '[command]', message),
   role: (message: string) => print('magenta', '[role]', message),

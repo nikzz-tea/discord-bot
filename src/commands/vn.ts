@@ -1,13 +1,14 @@
-import { CommandObject, Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
+import type { CommandObject, Props } from '../models';
 import { vndbService } from '../services/vndb.service';
-import formatHyperlinks from '../utils/formatHyperlinks';
+import { formatHyperlinks } from '../utils';
 
 export default {
   aliases: ['вн'],
   callback: async ({ args, message }: Props) => {
     if (!args.length) return message.react('❌');
     if (!message.channel.isSendable()) return;
+
     const data = await vndbService.getVn(args.join(' '));
     if (!data) return message.react('❌');
     const rating = data.rating != null ? (data.rating / 10).toFixed(2) : 'N/A';
@@ -27,6 +28,7 @@ export default {
         { name: 'Play time', value: playtime, inline: true },
         { name: 'Rating', value: rating, inline: true },
       ]);
+
     message.channel.send({ embeds: [emb] });
   },
 } satisfies CommandObject;

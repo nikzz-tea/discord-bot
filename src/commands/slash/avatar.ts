@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { SlashCommandObject } from '../../models';
+import type { SlashCommandObject } from '../../models';
 
 export default {
   data: new SlashCommandBuilder()

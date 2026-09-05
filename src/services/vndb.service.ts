@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { IChar, INovel } from '../models';
-import logger from '../utils/log';
+import type { Character, Novel } from '../models';
+import { logger } from '../utils';
 
 export const vndbService = {
   async vnsByRating() {
@@ -35,7 +35,7 @@ export const vndbService = {
       page: 1,
     };
     try {
-      const { data } = await axios.post<INovel>('https://api.vndb.org/kana/vn', query);
+      const { data } = await axios.post<Novel>('https://api.vndb.org/kana/vn', query);
       return data.results[0];
     } catch (error) {
       logger.error(String(error));
@@ -52,7 +52,7 @@ export const vndbService = {
       page: 1,
     };
     try {
-      const { data } = await axios.post<IChar>('https://api.vndb.org/kana/character', query);
+      const { data } = await axios.post<Character>('https://api.vndb.org/kana/character', query);
       return data.results[0];
     } catch (error) {
       logger.error(String(error));

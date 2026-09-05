@@ -1,8 +1,8 @@
 import { count, eq } from 'drizzle-orm';
-import { Messages } from '../database/schema';
 import { db } from '../database';
+import { Messages } from '../database/schema';
 
-const getMessages = async (id: string) => {
+export const getMessages = async (id: string) => {
   const result = db.select({ count: count() }).from(Messages).where(eq(Messages.guildId, id)).get();
   const max = result?.count ?? 0;
   const limit = 500;
@@ -16,5 +16,3 @@ const getMessages = async (id: string) => {
     .all();
   return rows.map((row) => row.message) as string[];
 };
-
-export default getMessages;

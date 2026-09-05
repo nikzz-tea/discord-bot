@@ -1,13 +1,14 @@
-import { CommandObject, Props } from '../models';
 import { EmbedBuilder } from 'discord.js';
 import { eq } from 'drizzle-orm';
-import { Commands } from '../database/schema';
 import { db } from '../database';
+import { Commands } from '../database/schema';
+import type { CommandObject, Props } from '../models';
 
 export default {
   aliases: ['команды'],
   callback: ({ guild, message }: Props) => {
     if (!message.channel.isSendable()) return;
+
     const commands = db
       .select({ name: Commands.name })
       .from(Commands)
@@ -18,6 +19,7 @@ export default {
       .setTitle('Список кастомных команд')
       .setDescription(names.sort().join(', '))
       .setColor('Aqua');
+
     message.channel.send({ embeds: [emb] });
   },
 } satisfies CommandObject;

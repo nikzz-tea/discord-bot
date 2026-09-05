@@ -6,6 +6,7 @@ export default async (message: Message) => {
   if (!message.content.toLowerCase().startsWith(`${name} кто`)) return;
   const guildId = message.guildId;
   if (!guildId) return;
+
   const members = Array.from((await message.guild?.members.fetch()) ?? []);
   const sendMessage = (array: [string, GuildMember][]) => {
     if (!message.channel.isSendable()) return;

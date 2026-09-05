@@ -1,9 +1,9 @@
 import { Client, TextChannel } from 'discord.js';
 import { eq, sql } from 'drizzle-orm';
-import { Images } from '../database/schema';
 import { db } from '../database';
+import { Images } from '../database/schema';
 
-const getRandomImage = async (client: Client, id: string) => {
+export const getRandomImage = async (client: Client, id: string) => {
   const entry = db
     .select()
     .from(Images)
@@ -21,5 +21,3 @@ const getRandomImage = async (client: Client, id: string) => {
   const attachments = Array.from(message.attachments.values());
   return attachments[index].url;
 };
-
-export default getRandomImage;

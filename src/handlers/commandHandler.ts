@@ -1,10 +1,9 @@
 import type { Client } from 'discord.js';
-import { pathToFileURL } from 'url';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import { prefix } from '../config';
 import type { CommandObject, SlashCommandObject } from '../models';
-import getFiles from '../utils/getFiles';
-import logger from '../utils/log';
+import { getFiles, logger } from '../utils';
 
 const cooldowns = new Map<string, number>();
 

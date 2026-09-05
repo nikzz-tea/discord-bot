@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { name } from '../../config';
-import genString from '../../utils/genString';
+import { genString } from '../../utils';
 
 export default async (message: Message) => {
   if (message.author.id === message.client.user?.id) return;
@@ -10,6 +10,7 @@ export default async (message: Message) => {
   if (!message.content.toLowerCase().startsWith(name)) return;
   if (message.content.toLowerCase().startsWith(`${name} кто`)) return;
   if (!message.channel.isSendable()) return;
+
   message.channel.sendTyping();
   message.channel.send(await genString(message.guild?.id as string, 3));
 };

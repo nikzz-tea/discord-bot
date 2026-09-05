@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
-import { name, prefix, saveFromChannels, genPerMessage } from '../../config';
-import { Images, Messages } from '../../database/schema';
+import { genPerMessage, name, prefix, saveFromChannels } from '../../config';
 import { db } from '../../database';
-import genString from '../../utils/genString';
+import { Images, Messages } from '../../database/schema';
+import { genString } from '../../utils';
 
 let count = 0;
 
@@ -13,6 +13,7 @@ export default async (message: Message) => {
   if (message.content.startsWith(prefix)) return;
   if (message.content.startsWith(name)) return;
   if (message.content.startsWith(`${name} кто`)) return;
+
   count++;
   count % genPerMessage === 0 &&
     message.channel.isSendable() &&

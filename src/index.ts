@@ -3,8 +3,7 @@ import syncSchema from './database';
 import commandHandler from './handlers/commandHandler';
 import eventHandler from './handlers/eventHandler';
 import { vndbService } from './services/vndb.service';
-import getRandomVn from './utils/getRandomVn';
-import logger from './utils/log';
+import { getRandomVn, logger } from './utils';
 
 const client = new Client({
   intents: 34563,
@@ -15,6 +14,7 @@ client.on('clientReady', async () => {
   syncSchema();
   await commandHandler(client);
   await eventHandler(client);
+
   const statuses = await vndbService.vnsByRating();
   const setActivity = () => {
     if (!statuses?.length) return;
@@ -22,6 +22,7 @@ client.on('clientReady', async () => {
   };
   setActivity();
   setInterval(setActivity, 1000 * 60 * 60);
+
   logger.info(`Logged as ${client.user?.tag}`);
 });
 

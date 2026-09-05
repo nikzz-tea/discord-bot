@@ -1,14 +1,15 @@
 import { Message } from 'discord.js';
-import { prefix } from '../../config';
 import { and, eq } from 'drizzle-orm';
-import { Commands } from '../../database/schema';
+import { prefix } from '../../config';
 import { db } from '../../database';
+import { Commands } from '../../database/schema';
 
 export default async (message: Message) => {
   if (message.author.id === message.client.user?.id) return;
   if (!message.content.startsWith(prefix)) return;
   const guildId = message.guildId;
   if (!guildId) return;
+
   const name = message.content.slice(prefix.length).split(' ')[0];
   const command = db
     .select()

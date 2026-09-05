@@ -1,4 +1,4 @@
-import { CommandObject, Props } from '../models';
+import type { CommandObject, Props } from '../models';
 
 export default {
   callback: ({ message }: Props) => {

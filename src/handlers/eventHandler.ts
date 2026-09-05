@@ -1,8 +1,7 @@
 import type { Client } from 'discord.js';
-import { pathToFileURL } from 'url';
 import path from 'path';
-import getFiles from '../utils/getFiles';
-import logger from '../utils/log';
+import { pathToFileURL } from 'url';
+import { getFiles, logger } from '../utils';
 
 type Handler = (...args: any[]) => unknown;
 

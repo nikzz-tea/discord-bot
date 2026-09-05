@@ -1,11 +1,12 @@
-import { CommandObject, Props } from '../models';
 import { count, eq } from 'drizzle-orm';
-import { Messages } from '../database/schema';
 import { db } from '../database';
+import { Messages } from '../database/schema';
+import type { CommandObject, Props } from '../models';
 
 export default {
   callback: ({ guild, message }: Props) => {
     if (!message.channel.isSendable()) return;
+
     const result = db
       .select({ count: count() })
       .from(Messages)

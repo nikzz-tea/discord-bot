@@ -1,25 +1,23 @@
-import { CommandObject, Props } from '../models';
-import { vndbService } from '../services/vndb.service';
 import { EmbedBuilder } from 'discord.js';
-import formatHyperlinks from '../utils/formatHyperlinks';
+import type { CommandObject, Props } from '../models';
+import { vndbService } from '../services/vndb.service';
+import { formatHyperlinks } from '../utils';
 
 export default {
   aliases: ['char'],
   callback: async ({ args, message }: Props) => {
     if (!args.length) return message.react('❌');
     if (!message.channel.isSendable()) return;
+
     const data = await vndbService.getChar(args.join(' '));
     if (!data) return message.react('❌');
+
     const description = data.description
       ? formatHyperlinks(data.description.slice(0, data.description.indexOf('\n')))
       : null;
     const from = `[${data.vns[0].title}](https://vndb.org/${data.vns[0].id})`;
     const gender =
-      data.sex?.[0] === 'f'
-        ? ':female_sign:'
-        : data.sex?.[0] === 'm'
-          ? ':male_sign:'
-          : '❓';
+      data.sex?.[0] === 'f' ? ':female_sign:' : data.sex?.[0] === 'm' ? ':male_sign:' : '❓';
     const emb = new EmbedBuilder()
       .setTitle(data.name)
       .setURL(`https://vndb.org/${data.id}`)
@@ -37,6 +35,7 @@ export default {
         ...(data.waist ? [{ name: 'Waist', value: data.waist.toString(), inline: true }] : []),
         ...(data.hips ? [{ name: 'Hips', value: data.hips.toString(), inline: true }] : []),
       ]);
+
     message.channel.send({ embeds: [emb] });
   },
 } satisfies CommandObject;

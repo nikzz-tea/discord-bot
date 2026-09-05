@@ -1,5 +1,5 @@
 import rawConfig from './config.json';
-import type { ITemplate } from './models';
+import type { Template } from './models';
 
 export interface GuildStarboardConfig {
   guild: string;
@@ -21,7 +21,7 @@ export interface BotConfig {
   roleFilter: Record<string, string[]>;
   starboard: Record<string, GuildStarboardConfig>;
   roles: Record<string, GuildRolesConfig>;
-  memes: Record<string, ITemplate>;
+  memes: Record<string, Template>;
 }
 
 const config = rawConfig as BotConfig;

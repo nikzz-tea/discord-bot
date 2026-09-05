@@ -1,8 +1,8 @@
 import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import { starboard } from '../../config';
-import { Starboard } from '../../database/schema';
 import { db } from '../../database';
-import logger from '../../utils/log';
+import { Starboard } from '../../database/schema';
+import { logger } from '../../utils';
 
 export default async (reaction: MessageReaction) => {
   const config = starboard[reaction.emoji.identifier];
@@ -10,6 +10,7 @@ export default async (reaction: MessageReaction) => {
   const guildId = reaction.message.guildId;
   if (!guildId || config.guild !== guildId) return;
   if (config.channel == reaction.message.channel.id) return;
+
   let message = reaction.message;
   if (reaction.message.partial) {
     message = await reaction.message.fetch();
@@ -24,9 +25,11 @@ export default async (reaction: MessageReaction) => {
   if (ids.includes(message.id)) return;
   const channelTo = message.client.channels.cache.get(config.channel) as TextChannel;
   const channelFrom = message.channel as TextChannel;
-  const timestamp = message.createdAt.toLocaleDateString(
-    "en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' }
-  )
+  const timestamp = message.createdAt.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
   const emb = new EmbedBuilder()
     .setColor(message.member?.displayHexColor ?? 'Aqua')
     .setAuthor({
@@ -44,8 +47,9 @@ export default async (reaction: MessageReaction) => {
   if (message.content != '') {
     emb.setDescription(message.content);
   }
+
   const finalMessage = await channelTo.send({ embeds: [emb] });
   db.insert(Starboard).values({ messageId: message.id }).run();
   db.insert(Starboard).values({ messageId: finalMessage.id }).run();
-  logger.starboard(`Posted ${message.url} in ${reaction.message.guild?.name}`);
+  logger.starboard(`Posted ${message.url} in '${reaction.message.guild?.name}'`);
 };

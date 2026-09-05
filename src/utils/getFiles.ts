@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from 'fs';
 import path from 'path';
 
-const getFiles = (dir: string): string[] => {
+export const getFiles = (dir: string): string[] => {
   const files = readdirSync(dir);
   const result: string[] = [];
   for (const file of files) {
@@ -14,5 +14,3 @@ const getFiles = (dir: string): string[] => {
   }
   return result;
 };
-
-export default getFiles;
