@@ -28,5 +28,3 @@ client.on('clientReady', async () => {
 });
 
 client.login(process.env.TOKEN);
-
-export default client;
