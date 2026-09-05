@@ -1,17 +1,18 @@
-import { Messages } from '../database/models';
+import { count, eq } from 'drizzle-orm';
+import { db } from '../database';
+import { Messages } from '../database/schema';
 
-const getMessages = async (id: string) => {
-  const max = await Messages.count({ where: { guildId: id } });
+export const getMessages = async (id: string) => {
+  const result = db.select({ count: count() }).from(Messages).where(eq(Messages.guildId, id)).get();
+  const max = result?.count ?? 0;
   const limit = 500;
   const start = Math.floor(Math.random() * max - limit) + 1;
-  const rows = await Messages.findAll({
-    where: {
-      guildId: id,
-    },
-    offset: start,
-    limit,
-  });
-  return rows.map((message) => message.get('message')) as string[];
+  const rows = db
+    .select({ message: Messages.message })
+    .from(Messages)
+    .where(eq(Messages.guildId, id))
+    .limit(limit)
+    .offset(start)
+    .all();
+  return rows.map((row) => row.message) as string[];
 };
-
-export default getMessages;

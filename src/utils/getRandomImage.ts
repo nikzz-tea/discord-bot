@@ -1,16 +1,23 @@
-import { TextChannel } from 'discord.js';
-import client from '..';
-import sequelize from '../database';
-import { Images } from '../database/models';
+import { Client, TextChannel } from 'discord.js';
+import { eq, sql } from 'drizzle-orm';
+import { db } from '../database';
+import { Images } from '../database/schema';
 
-const getRandomImage = async (id: string) => {
-  const entry = (
-    await Images.findOne({ order: sequelize.random(), where: { guildId: id } })
-  ).toJSON();
-  const channel = (await client.channels.fetch(entry.channelId)) as TextChannel;
-  const message = await channel.messages.fetch(entry.messageId);
+export const getRandomImage = async (client: Client, id: string) => {
+  const entry = db
+    .select()
+    .from(Images)
+    .where(eq(Images.guildId, id))
+    .orderBy(sql`random()`)
+    .limit(1)
+    .get();
+  if (!entry) throw new Error(`No saved image for guild ${id}`);
+  const { channelId, messageId, index } = entry;
+  if (!channelId || !messageId || index == null) {
+    throw new Error('Incomplete image record');
+  }
+  const channel = (await client.channels.fetch(channelId)) as TextChannel;
+  const message = await channel.messages.fetch(messageId);
   const attachments = Array.from(message.attachments.values());
-  return attachments[entry.index].url;
+  return attachments[index].url;
 };
-
-export default getRandomImage;

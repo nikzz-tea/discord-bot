@@ -1,12 +1,9 @@
 import { ActivityType, Client, Partials } from 'discord.js';
-import WOKCommands, { DefaultCommands } from 'wokcommands';
-import path from 'path';
-import dotenv from 'dotenv';
+import syncSchema from './database';
+import commandHandler from './handlers/commandHandler';
+import eventHandler from './handlers/eventHandler';
 import { vndbService } from './services/vndb.service';
-import sequelize from './database';
-import getRandomVn from './utils/getRandomVn';
-
-dotenv.config();
+import { getRandomVn, logger } from './utils';
 
 const client = new Client({
   intents: 34563,
@@ -14,28 +11,19 @@ const client = new Client({
 });
 
 client.on('clientReady', async () => {
-  await sequelize.sync();
-  new WOKCommands({
-    client: client as any,
-    commandsDir: path.join(__dirname, 'commands'),
-    events: { dir: path.join(__dirname, 'events') },
-    disabledDefaultCommands: [
-      DefaultCommands.ChannelCommand,
-      DefaultCommands.CustomCommand,
-      DefaultCommands.Prefix,
-      DefaultCommands.RequiredPermissions,
-      DefaultCommands.RequiredRoles,
-      DefaultCommands.ToggleCommand,
-    ],
-  });
+  syncSchema();
+  await commandHandler(client);
+  await eventHandler(client);
+
   const statuses = await vndbService.vnsByRating();
-  client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
-  setInterval(() => {
-    client.user.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
-  }, 1000 * 60 * 60);
-  console.log(`Logged as ${client.user.tag}`);
+  const setActivity = () => {
+    if (!statuses?.length) return;
+    client.user?.setActivity(getRandomVn(statuses), { type: ActivityType.Playing });
+  };
+  setActivity();
+  setInterval(setActivity, 1000 * 60 * 60);
+
+  logger.info(`Logged as ${client.user?.tag}`);
 });
 
 client.login(process.env.TOKEN);
-
-export default client;

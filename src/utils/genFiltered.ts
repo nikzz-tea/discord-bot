@@ -1,5 +1,5 @@
-import getMessages from './getMessages';
 import MarkovGen from 'markov-generator';
+import { getMessages } from './getMessages';
 
 const filterString = (string: string) => {
   const array = string.split(' ');
@@ -7,11 +7,9 @@ const filterString = (string: string) => {
   return array.join(' ');
 };
 
-const genFiltered = async (id: string) => {
+export const genFiltered = async (id: string) => {
   const messages = await getMessages(id);
   const filtered = messages.map((message) => filterString(message));
   const markov = new MarkovGen({ input: filtered, minLength: 1 });
   return markov.makeChain();
 };
-
-export default genFiltered;

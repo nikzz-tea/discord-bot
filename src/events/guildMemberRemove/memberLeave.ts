@@ -1,5 +1,5 @@
 import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
-import { mainChannels } from '../../config.json';
+import { mainChannels } from '../../config';
 
 export default (member: GuildMember) => {
   const channel = member.client.channels.cache.get(mainChannels[member.guild.id]) as TextChannel;

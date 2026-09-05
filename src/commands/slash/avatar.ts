@@ -1,32 +1,33 @@
-import { ApplicationCommandOptionType } from 'discord.js';
-import { CommandObject, CommandType, CommandUsage } from 'wokcommands';
+import { SlashCommandBuilder } from 'discord.js';
+import type { SlashCommandObject } from '../../models';
 
 export default {
-  type: CommandType.SLASH,
-  description: 'Показывает аву',
-  options: [
-    {
-      name: 'user',
-      description: 'чья ава',
-      type: ApplicationCommandOptionType.User,
-      required: false,
-    },
-    {
-      name: 'type',
-      description: 'серверная или общая',
-      type: ApplicationCommandOptionType.String,
-      required: false,
-      autocomplete: true,
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName('avatar')
+    .setDescription('Показывает аву')
+    .addUserOption((option) => option.setName('user').setDescription('чья ава').setRequired(false))
+    .addStringOption((option) =>
+      option
+        .setName('type')
+        .setDescription('серверная или общая')
+        .setRequired(false)
+        .setAutocomplete(true),
+    ),
   autocomplete: () => ['серверная', 'общая'],
-  callback: ({ interaction, member, guild }: CommandUsage) => {
-    const user = guild.members.cache.get(interaction.options.getUser('user')?.id || member.id);
-    const type = interaction.options.get('type')?.value || 'общая';
-    const avatar =
-      type === 'серверная'
-        ? user.displayAvatarURL({ size: 1024 })
-        : user.user.displayAvatarURL({ size: 1024 });
-    return avatar;
+  callback: async ({ interaction }) => {
+    const target = interaction.options.getUser('user') ?? interaction.user;
+    const type = interaction.options.getString('type') ?? 'общая';
+
+    let avatar: string;
+    if (type === 'серверная' && interaction.inGuild()) {
+      const member =
+        interaction.guild?.members.cache.get(target.id) ??
+        (await interaction.guild?.members.fetch(target.id));
+      avatar = member?.displayAvatarURL({ size: 1024 }) ?? target.displayAvatarURL({ size: 1024 });
+    } else {
+      avatar = target.displayAvatarURL({ size: 1024 });
+    }
+
+    await interaction.reply({ content: avatar });
   },
-} as CommandObject;
+} satisfies SlashCommandObject;

@@ -1,51 +1,41 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { CommandType } from 'wokcommands';
-import { ITemplate, Props } from '../models';
-import { memes } from '../config.json';
-import getRandomImage from '../utils/getRandomImage';
-import logChannel from '../utils/logChannel';
-
-let retryCount = 0;
+import { memes } from '../config';
+import type { CommandObject, Props, Template } from '../models';
+import { getRandomImage, logger } from '../utils';
 
 export default {
-  type: CommandType.LEGACY,
   aliases: ['мем'],
-  reply: false,
   cooldowns: {
-    duration: '3 s',
+    seconds: 3,
     errorMessage: 'подожди кд',
-    type: 'perGuild',
   },
-  callback: async ({ args, guild, message }: Props) => {
-    (async function genMeme() {
-      if (!message.channel.isSendable()) return;
-      message.channel.sendTyping();
-      try {
-        const template = memes[
-          Object.keys(memes)[Math.floor(Math.random() * Object.keys(memes).length)]
-        ] as ITemplate;
-        const canvas = createCanvas(template.size[0], template.size[1]);
-        const canvasTemplate = await loadImage(template.url);
-        const ctx = canvas.getContext('2d');
-        for (const box of template.boxes) {
-          const image = await loadImage(await getRandomImage(guild.id));
-          ctx.drawImage(image, box.leftCorner[0], box.leftCorner[1], box.size[0], box.size[1]);
-        }
-        ctx.drawImage(canvasTemplate, 0, 0);
-        message.channel.send({
-          files: [
-            {
-              attachment: canvas.toBuffer('image/png'),
-              name: 'meme.png',
-            },
-          ],
-        });
-      } catch (error) {
-        retryCount++;
-        if (retryCount >= 5) return message.react('❌');
-        logChannel.send(`\`\`\`json\n${error}\n\`\`\``);
-        genMeme();
+  callback: async ({ guild, message }: Props) => {
+    if (!message.channel.isSendable()) return;
+    message.channel.sendTyping();
+
+    try {
+      const templates = Object.values(memes);
+      const template = templates[Math.floor(Math.random() * templates.length)] as Template;
+      const canvas = createCanvas(template.size[0], template.size[1]);
+      const canvasTemplate = await loadImage(template.url);
+      const ctx = canvas.getContext('2d');
+      for (const box of template.boxes) {
+        const image = await loadImage(await getRandomImage(message.client, guild.id));
+        ctx.drawImage(image, box.leftCorner[0], box.leftCorner[1], box.size[0], box.size[1]);
       }
-    })();
+      ctx.drawImage(canvasTemplate, 0, 0);
+
+      message.channel.send({
+        files: [
+          {
+            attachment: canvas.toBuffer('image/png'),
+            name: 'meme.png',
+          },
+        ],
+      });
+    } catch (error) {
+      logger.error(String(error));
+      return message.react('❌');
+    }
   },
-};
+} satisfies CommandObject;
