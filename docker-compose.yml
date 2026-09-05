@@ -3,6 +3,7 @@ services:
     build: .
     container_name: zakuro
     restart: unless-stopped
+    tty: true
     volumes:
       - ./db.sqlite:/app/db.sqlite
       - ./.env:/app/.env

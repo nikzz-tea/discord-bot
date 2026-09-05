@@ -5,12 +5,12 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 COPY src ./src
-RUN bun build src/index.ts --outdir dist
+RUN bun run build
 
 FROM oven/bun:1-alpine AS runtime
 WORKDIR /app
 
-RUN apk add --no-cache ttf-dejavu
+RUN apk add --no-cache font-liberation
 
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
