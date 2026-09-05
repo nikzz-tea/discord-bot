@@ -4,6 +4,7 @@ import commandHandler from './handlers/commandHandler';
 import eventHandler from './handlers/eventHandler';
 import { vndbService } from './services/vndb.service';
 import getRandomVn from './utils/getRandomVn';
+import logger from './utils/log';
 
 const client = new Client({
   intents: 34563,
@@ -21,10 +22,7 @@ client.on('clientReady', async () => {
   };
   setActivity();
   setInterval(setActivity, 1000 * 60 * 60);
-  const user = client.user;
-  if (user) {
-    console.log(`Logged as ${user.tag}`);
-  }
+  logger.info(`Logged as ${client.user?.tag}`);
 });
 
 client.login(process.env.TOKEN);

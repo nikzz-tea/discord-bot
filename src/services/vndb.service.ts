@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { IChar, INovel } from '../models';
+import logger from '../utils/log';
 
 export const vndbService = {
   async vnsByRating() {
@@ -21,7 +22,8 @@ export const vndbService = {
       titles.push('Maggot baits');
       return titles;
     } catch (error) {
-      console.log(error);
+      logger.error(String(error));
+      return undefined;
     }
   },
   async getVn(searchQuery: string) {
@@ -32,8 +34,13 @@ export const vndbService = {
       results: 1,
       page: 1,
     };
-    const { data } = await axios.post<INovel>('https://api.vndb.org/kana/vn', query);
-    return data.results[0];
+    try {
+      const { data } = await axios.post<INovel>('https://api.vndb.org/kana/vn', query);
+      return data.results[0];
+    } catch (error) {
+      logger.error(String(error));
+      return undefined;
+    }
   },
   async getChar(searchQuery: string) {
     const query = {
@@ -44,7 +51,12 @@ export const vndbService = {
       results: 1,
       page: 1,
     };
-    const { data } = await axios.post<IChar>('https://api.vndb.org/kana/character', query);
-    return data.results[0];
+    try {
+      const { data } = await axios.post<IChar>('https://api.vndb.org/kana/character', query);
+      return data.results[0];
+    } catch (error) {
+      logger.error(String(error));
+      return undefined;
+    }
   },
 };

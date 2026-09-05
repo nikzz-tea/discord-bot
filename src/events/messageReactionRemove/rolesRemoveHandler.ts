@@ -1,5 +1,6 @@
 import { MessageReaction, User } from 'discord.js';
 import { roles } from '../../config';
+import logger from '../../utils/log';
 
 export default async (reaction: MessageReaction, user: User) => {
   const guildId = reaction.message.guildId;
@@ -16,4 +17,5 @@ export default async (reaction: MessageReaction, user: User) => {
   const member = guild.members.cache.get(user.id);
   if (!member) return;
   member.roles.remove(role);
+  logger.role(`Removed \`${role.name}\` from \`${user.tag}\` in \`${guild.name}\``);
 };

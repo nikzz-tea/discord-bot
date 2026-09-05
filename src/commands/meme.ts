@@ -1,9 +1,8 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { CommandObject, Props } from '../models';
+import { CommandObject, ITemplate, Props } from '../models';
 import { memes } from '../config';
 import getRandomImage from '../utils/getRandomImage';
-
-let retryCount = 0;
+import logger from '../utils/log';
 
 export default {
   aliases: ['мем'],
@@ -12,13 +11,13 @@ export default {
     errorMessage: 'подожди кд',
   },
   callback: async ({ guild, message }: Props) => {
-    (async function genMeme() {
       if (!message.channel.isSendable()) return;
       message.channel.sendTyping();
       try {
-        const template = memes[
-          Object.keys(memes)[Math.floor(Math.random() * Object.keys(memes).length)]
-        ];
+        const templates = Object.values(memes);
+        const template = templates[
+          Math.floor(Math.random() * templates.length)
+        ] as ITemplate;
         const canvas = createCanvas(template.size[0], template.size[1]);
         const canvasTemplate = await loadImage(template.url);
         const ctx = canvas.getContext('2d');
@@ -36,11 +35,8 @@ export default {
           ],
         });
       } catch (error) {
-        retryCount++;
-        if (retryCount >= 5) return message.react('❌');
-        console.error(error);
-        genMeme();
+        logger.error(String(error));
+        return message.react('❌');
       }
-    })();
   },
 } satisfies CommandObject;

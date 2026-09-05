@@ -2,6 +2,7 @@ import type { Client } from 'discord.js';
 import { pathToFileURL } from 'url';
 import path from 'path';
 import getFiles from '../utils/getFiles';
+import logger from '../utils/log';
 
 type Handler = (...args: any[]) => unknown;
 
@@ -22,7 +23,7 @@ export default async (client: Client) => {
         try {
           await handler(...args);
         } catch (error) {
-          console.error(error);
+          logger.error(String(error));
         }
       }
     });

@@ -4,6 +4,7 @@ import path from 'path';
 import { prefix } from '../config';
 import type { CommandObject, SlashCommandObject } from '../models';
 import getFiles from '../utils/getFiles';
+import logger from '../utils/log';
 
 const cooldowns = new Map<string, number>();
 
@@ -55,10 +56,12 @@ export default async (client: Client) => {
       cooldowns.set(key, now);
     }
 
+    logger.command(`${message.author.tag} used !${commandName}`);
+
     try {
       await command.callback({ args, guild: message.guild, message });
     } catch (error) {
-      console.error(error);
+      logger.error(String(error));
     }
   });
 
@@ -75,15 +78,17 @@ export default async (client: Client) => {
     const command = slashCommands.find((cmd) => cmd.data.name === interaction.commandName);
     if (!command) return;
 
+    logger.command(`${interaction.user.tag} used /${interaction.commandName}`);
+
     try {
       await command.callback({ interaction });
     } catch (error) {
-      console.error(error);
+      logger.error(String(error));
     }
   });
 
   if (client.application) {
     await client.application.commands.set(slashCommands.map((command) => command.data.toJSON()));
-    console.info(`Registered ${slashCommands.length} slash command(s)`);
+    logger.info(`Registered ${slashCommands.length} slash command(s)`);
   }
 };

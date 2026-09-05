@@ -2,6 +2,7 @@ import { EmbedBuilder, MessageReaction, TextChannel } from 'discord.js';
 import { starboard } from '../../config';
 import { Starboard } from '../../database/schema';
 import { db } from '../../database';
+import logger from '../../utils/log';
 
 export default async (reaction: MessageReaction) => {
   const config = starboard[reaction.emoji.identifier];
@@ -46,4 +47,5 @@ export default async (reaction: MessageReaction) => {
   const finalMessage = await channelTo.send({ embeds: [emb] });
   db.insert(Starboard).values({ messageId: message.id }).run();
   db.insert(Starboard).values({ messageId: finalMessage.id }).run();
+  logger.starboard(`Posted ${message.url} in ${reaction.message.guild?.name}`);
 };

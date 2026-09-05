@@ -2,8 +2,7 @@ import { Image, createCanvas, loadImage } from '@napi-rs/canvas';
 import { CommandObject, Props } from '../models';
 import getRandomImage from '../utils/getRandomImage';
 import genFiltered from '../utils/genFiltered';
-
-let retryCount = 0;
+import logger from '../utils/log';
 
 export default {
   aliases: ['демотиватор', 'д'],
@@ -12,7 +11,6 @@ export default {
     errorMessage: 'подожди кд',
   },
   callback: async ({ guild, message }: Props) => {
-    (async function genDemotivator() {
       if (!message.channel.isSendable()) return;
       message.channel.sendTyping();
       try {
@@ -45,11 +43,8 @@ export default {
           ],
         });
       } catch (error) {
-        retryCount++;
-        if (retryCount >= 5) return message.react('❌');
-        console.error(error);
-        genDemotivator();
+        logger.error(String(error));
+        return message.react('❌');
       }
-    })();
   },
 } satisfies CommandObject;
